@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Score Keeper</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="actions-row">
+    <div class="actions-left">
+      <button type="button" class="btn-tertiary" id="btn-reset-score">Reset</button>
+    </div>
+    <div class="default-score-slot" id="default-score-slot">
+      <button type="button" class="btn-tertiary" id="btn-set-default-score">Set a default score</button>
+      <div class="default-score-controls" id="default-score-controls" hidden>
+        <button type="button" class="btn-secondary default-score-btn" id="btn-default-minus" aria-label="Decrease default score">−</button>
+        <span class="default-score-value" id="default-score-value">0</span>
+        <button type="button" class="btn-secondary default-score-btn" id="btn-default-plus" aria-label="Increase default score">+</button>
+        <button type="button" class="btn-secondary default-score-btn" id="btn-save-default-score">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="players-container" id="players-container">
+    <section id="player-1" class="player-card">
+      <div class="player-name-row">
+        <h2 id="player-1-name" class="player-name" contenteditable="true" spellcheck="false" data-player="player-1" data-placeholder="+ Add player name"></h2>
+        <button type="button" class="btn-save" aria-label="Save name">Save</button>
+      </div>
+      <div class="score-controls">
+        <button type="button" class="btn-secondary score-btn btn-decrement" data-player="player-1" aria-label="Decrease score">−</button>
+        <div id="player-1-score" class="score" contenteditable="true" data-player="player-1">0</div>
+        <button type="button" class="btn-secondary score-btn btn-increment" data-player="player-1" aria-label="Increase score">+</button>
+      </div>
+      <button type="button" class="btn-remove" data-player="player-1" aria-label="Remove player">Remove</button>
+    </section>
+
+    <section id="player-2" class="player-card">
+      <div class="player-name-row">
+        <h2 id="player-2-name" class="player-name" contenteditable="true" spellcheck="false" data-player="player-2" data-placeholder="+ Add player name"></h2>
+        <button type="button" class="btn-save" aria-label="Save name">Save</button>
+      </div>
+      <div class="score-controls">
+        <button type="button" class="btn-secondary score-btn btn-decrement" data-player="player-2" aria-label="Decrease score">−</button>
+        <div id="player-2-score" class="score" contenteditable="true" data-player="player-2">0</div>
+        <button type="button" class="btn-secondary score-btn btn-increment" data-player="player-2" aria-label="Increase score">+</button>
+      </div>
+      <button type="button" class="btn-remove" data-player="player-2" aria-label="Remove player">Remove</button>
+    </section>
+
+    <button type="button" class="add-player-card" id="btn-add-player">Add player</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+/* --- Minimal game night --- */
+:root {
+  --bg: #1a1b26;
+  --surface: #24283b;
+  --surface-hover: #2d3142;
+  --text: #c0caf5;
+  --text-muted: #7aa2f7;
+  --primary: #7aa2f7;
+  --primary-hover: #89b4fa;
+  --primary-text: #1a1b26;
+  --secondary: transparent;
+  --secondary-border: #7aa2f7;
+  --secondary-hover: rgba(122, 162, 247, 0.15);
+  --tertiary: transparent;
+  --tertiary-text: #a9b1d6;
+  --tertiary-hover: rgba(166, 173, 200, 0.12);
+  --radius: 12px;
+  --radius-btn: 10px;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  --card-max: 400px;
+  --card-min: 280px;
+  --content-max: 1280px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 2rem 1.5rem 3rem;
+}
+
+/* Content area: buttons and cards share same max-width and alignment */
+.actions-row,
+.players-container {
+  width: 100%;
+}
+
+/* Full-width grid: as many cards per row as fit, all same width; fill from left */
+.players-container {
+  margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+  gap: 1.5rem;
+}
+
+.player-card {
+  min-width: 0;
+  aspect-ratio: 1 / 1;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.player-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.player-name-row .btn-save {
+  display: none;
+}
+
+.player-name-row.editing .btn-save {
+  display: inline-block;
+}
+
+.player-name {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  min-width: 0;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-btn);
+  outline: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: var(--tertiary);
+  transition: background 0.15s ease, border-color 0.15s ease;
+  text-align: center;
+}
+
+.player-name:hover {
+  background: var(--tertiary-hover);
+}
+
+.player-name:focus,
+.player-name-row.editing .player-name {
+  border-color: var(--primary);
+  background: rgba(122, 162, 247, 0.08);
+}
+
+.player-name:focus:hover,
+.player-name-row.editing .player-name:hover {
+  background: rgba(122, 162, 247, 0.08);
+}
+
+.player-name:empty::before {
+  content: attr(data-placeholder);
+  color: var(--tertiary-text);
+}
+
+.player-name:focus::before {
+  content: none;
+}
+
+.score {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: center;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  outline: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-btn);
+  cursor: text;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.score:hover {
+  background: rgba(122, 162, 247, 0.06);
+}
+
+.score:focus {
+  border-color: var(--primary);
+  background: rgba(122, 162, 247, 0.08);
+}
+
+/* Button base */
+button {
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-btn);
+  padding: 0.6rem 1rem;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Score controls row: minus | score | plus (same layout and button style as default-score-controls) */
+.score-controls {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.score-controls .score {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Score +/- buttons: same styling as default-score-controls (secondary outline) */
+.score-controls .score-btn {
+  padding: calc(0.6rem - 2px) calc(1rem - 2px);
+  background: var(--secondary);
+  color: var(--secondary-border);
+  border: 2px solid var(--secondary-border);
+  font-size: 0.9375rem;
+}
+
+.score-controls .score-btn:hover {
+  background: var(--secondary-hover);
+}
+
+/* Secondary: Add player, Reset score */
+.btn-secondary {
+  background: var(--secondary);
+  color: var(--secondary-border);
+  border: 2px solid var(--secondary-border);
+}
+
+.btn-secondary:hover {
+  background: var(--secondary-hover);
+}
+
+.actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 auto 1.5rem;
+}
+
+.actions-left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Tertiary: Remove, Save, Set default score */
+.btn-remove,
+.btn-save,
+.btn-tertiary {
+  background: var(--tertiary);
+  color: var(--tertiary-text);
+}
+
+.btn-remove:hover,
+.btn-save:hover,
+.btn-tertiary:hover {
+  background: var(--tertiary-hover);
+}
+
+/* Slot where "Set a default score" button is replaced by the controls – fixed height so row doesn’t shift */
+.default-score-slot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.5rem;
+}
+
+.default-score-controls {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.default-score-controls[hidden] {
+  display: none !important;
+}
+
+/* Minus/plus: secondary look, same total size as tertiary Save (smaller padding to offset 2px border) */
+.default-score-controls .default-score-btn {
+  padding: calc(0.6rem - 2px) calc(1rem - 2px);
+  background: var(--secondary);
+  color: var(--secondary-border);
+  border: 2px solid var(--secondary-border);
+  font-size: 0.9375rem;
+}
+
+.default-score-controls .default-score-btn:hover {
+  background: var(--secondary-hover);
+}
+
+/* Number: same style as player name; compact line-height so slot height stays single line */
+.default-score-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text);
+  min-width: 2rem;
+  text-align: center;
+  padding: 0 0.25rem;
+}
+
+.player-card .score-controls + .btn-remove {
+  margin-top: 0.25rem;
+}
+
+.player-card .btn-remove {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Add player: empty card placeholder in the grid */
+.add-player-card {
+  min-width: 0;
+  min-height: 140px;
+  background: transparent;
+  border: 2px dashed rgba(122, 162, 247, 0.4);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.add-player-card:hover {
+  background: var(--tertiary-hover);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 1.25rem 1rem 2rem;
+  }
+
+  .players-container {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .player-card,
+  .add-player-card {
+    width: 100%;
+  }
+}
