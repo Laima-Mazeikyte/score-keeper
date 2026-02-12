@@ -32,6 +32,18 @@ function setDefaultScore(value) {
   defaultScore = Math.max(0, parseInt(value, 10) || 0);
 }
 
+function getScoreFromCard(card) {
+  const el = card.querySelector('.score');
+  return el ? (parseInt(el.textContent, 10) || 0) : 0;
+}
+
+function getPlayerNameFromCard(card) {
+  const el = card.querySelector('.player-name');
+  if (!el) return '';
+  const text = (el.textContent || '').trim();
+  return text === '' || text === PLACEHOLDER_TEXT ? '' : text;
+}
+
 function saveScores() {
   const container = document.getElementById('players-container');
   const sections = container.querySelectorAll('.player-card');
@@ -42,8 +54,8 @@ function saveScores() {
     const id = section.id;
     if (!id || id.indexOf('player-') !== 0) return;
     playerOrder.push(id);
-    scores[id] = getScore(id);
-    names[id] = getPlayerName(id);
+    scores[id] = getScoreFromCard(section);
+    names[id] = getPlayerNameFromCard(section);
   });
   localStorage.setItem(STORAGE_KEY, JSON.stringify({
     playerOrder: playerOrder,
@@ -112,37 +124,44 @@ function addPlayer() {
 
 function loadScores() {
   const data = getSavedState();
-  if (!data) return;
   const container = document.getElementById('players-container');
-  const existingCards = container.querySelectorAll('.player-card');
-  var order = Array.isArray(data.playerOrder) ? data.playerOrder : ['player-1', 'player-2'];
-  const scores = data.scores || {};
-  const names = data.names || {};
-  if (typeof data.defaultScore === 'number' && data.defaultScore >= 0) {
-    defaultScore = data.defaultScore;
-  }
-  if (!Array.isArray(data.playerOrder) && (typeof data.player1 === 'number' || typeof data.player2 === 'number')) {
-    if (typeof data.player1 === 'number') scores['player-1'] = data.player1;
-    if (typeof data.player2 === 'number') scores['player-2'] = data.player2;
-    if (typeof data.player1Name === 'string') names['player-1'] = data.player1Name;
-    if (typeof data.player2Name === 'string') names['player-2'] = data.player2Name;
-  }
-  existingCards.forEach(function (section) {
-    const id = section.id;
-    if (order.indexOf(id) === -1) return;
-    if (typeof scores[id] === 'number') setScore(id, scores[id]);
-    if (typeof names[id] === 'string' && names[id]) setPlayerName(id, names[id]);
-  });
   const addPlayerBtn = document.getElementById('btn-add-player');
-  for (var i = existingCards.length; i < order.length; i++) {
-    const id = order[i];
-    const card = createPlayerCard(id, typeof scores[id] === 'number' ? scores[id] : getDefaultScore());
-    if (typeof scores[id] === 'number') setScore(id, scores[id]);
-    if (typeof names[id] === 'string' && names[id]) setPlayerName(id, names[id]);
+  var order = ['player-1', 'player-2'];
+  var scores = {};
+  var names = {};
+
+  if (data) {
+    order = Array.isArray(data.playerOrder) ? data.playerOrder : order;
+    scores = data.scores || {};
+    names = data.names || {};
+    if (typeof data.defaultScore === 'number' && data.defaultScore >= 0) {
+      defaultScore = data.defaultScore;
+    }
+    if (!Array.isArray(data.playerOrder) && (typeof data.player1 === 'number' || typeof data.player2 === 'number')) {
+      if (typeof data.player1 === 'number') scores['player-1'] = data.player1;
+      if (typeof data.player2 === 'number') scores['player-2'] = data.player2;
+      if (typeof data.player1Name === 'string') names['player-1'] = data.player1Name;
+      if (typeof data.player2Name === 'string') names['player-2'] = data.player2Name;
+    }
+  }
+
+  // Rebuild all cards from saved order so every card behaves the same (no ghost cards, correct order).
+  container.querySelectorAll('.player-card').forEach(function (card) {
+    card.remove();
+  });
+  order.forEach(function (id) {
+    const score = typeof scores[id] === 'number' ? scores[id] : getDefaultScore();
+    const card = createPlayerCard(id, score);
+    var nameVal = typeof names[id] === 'string' ? names[id] : '';
+    var scoreVal = typeof scores[id] === 'number' ? scores[id] : score;
+    var nameEl = card.querySelector('.player-name');
+    var scoreEl = card.querySelector('.score');
+    if (nameEl) nameEl.textContent = nameVal;
+    if (scoreEl) scoreEl.textContent = scoreVal;
     container.insertBefore(card, addPlayerBtn);
     setupPlayerNameEditingFor(card);
     setupScoreEditingFor(card);
-  }
+  });
 }
 
 function setupPlayerNameEditingFor(card) {
