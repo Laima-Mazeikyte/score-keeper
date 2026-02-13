@@ -318,4 +318,23 @@ button:active {
   .add-player-card {
     width: 100%;
   }
+
+  .player-card {
+    aspect-ratio: auto;
+    justify-content: flex-start;
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .player-name-row {
+    gap: 0.5rem;
+  }
+
+  .score-controls {
+    gap: 0.4rem;
+  }
+
+  .player-card .btn-remove {
+    margin-top: 0;
+  }
 }
