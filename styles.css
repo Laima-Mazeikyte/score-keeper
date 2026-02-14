@@ -3,7 +3,7 @@
 /* --- Minimal game night (semantic theme from tokens) --- */
 :root {
   /* Colors from primitive tokens */
-  --bg: var(--gray-950);
+  --bg: var(--gray-1000);
   --surface: var(--gray-900);
   --surface-hover: var(--gray-800);
   --text: var(--gray-200);
@@ -19,7 +19,7 @@
   --secondary-hover: color-mix(in srgb, var(--blue-500) 15%, transparent);
   --tertiary-hover: color-mix(in srgb, var(--gray-300) 12%, transparent);
   --primary-bg-subtle: color-mix(in srgb, var(--blue-500) 8%, transparent);
-  --primary-bg-hover: color-mix(in srgb, var(--blue-500) 6%, transparent);
+  --primary-bg-hover: color-mix(in srgb, var(--blue-300) 12%, transparent);
   --primary-border-muted: color-mix(in srgb, var(--blue-500) 40%, transparent);
   /* Layout (unchanged) */
   --radius: 12px;
@@ -73,10 +73,10 @@ body {
 }
 .page-header h1 {
   margin: 0;
-  font-size: 2.75rem;
-  font-weight: 800;
+  font-family: "Scarbes", sans-serif;
+  font-size: 4.5rem;
+  font-weight: 300;
   color: var(--text);
-  text-transform: uppercase;
   letter-spacing: 0.02em;
 }
 .btn-add-player-header {
@@ -84,6 +84,7 @@ body {
   background: var(--tertiary);
   color: var(--tertiary-text);
   flex-shrink: 0;
+  border: 1px solid color-mix(in srgb, var(--tertiary-text) 35%, transparent);
 }
 .btn-add-player-header:hover {
   background: var(--tertiary-hover);
@@ -240,11 +241,11 @@ button:active {
   transform: scale(0.98);
 }
 
-/* Score controls row: minus | score | plus (same layout and button style as default-score-controls) */
+/* Score controls row: minus | score | plus; buttons stretch to fill row height */
 .score-controls {
   display: flex;
   flex-wrap: nowrap;
-  align-items: center;
+  align-items: stretch;
   gap: var(--space-2);
 }
 
@@ -253,28 +254,31 @@ button:active {
   min-width: 0;
 }
 
-/* Score +/- buttons: same styling as default-score-controls (secondary outline) */
+/* Score +/- buttons: fill row top-to-bottom; slight darker default so shape is visible, hover same as Add player */
 .score-controls .score-btn {
-  padding: calc(var(--space-3) - 2px) calc(var(--space-4) - 2px);
-  background: var(--secondary);
-  color: var(--secondary-border);
-  border: 2px solid var(--secondary-border);
+  padding: 0 var(--space-4);
+  background: var(--surface-hover);
+  color: var(--tertiary-text);
+  border: none;
   font-size: 0.9375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .score-controls .score-btn:hover {
-  background: var(--secondary-hover);
+  background: var(--primary-bg-hover);
 }
 
 /* Secondary: Add player, Reset score */
 .btn-secondary {
-  background: var(--secondary);
-  color: var(--secondary-border);
-  border: 2px solid var(--secondary-border);
+  background: var(--surface-hover);
+  color: var(--text);
+  border: none;
 }
 
 .btn-secondary:hover {
-  background: var(--secondary-hover);
+  background: var(--primary-bg-hover);
 }
 
 .actions-row {
@@ -302,6 +306,12 @@ button:active {
   height: 44px;
   background: var(--tertiary);
   color: var(--tertiary-text);
+}
+
+/* Very subtle border on header tertiary buttons only (Add player, Reset score, Starting score) */
+.page-header .btn-tertiary,
+.page-header .starting-score-display {
+  border: 1px solid color-mix(in srgb, var(--tertiary-text) 35%, transparent);
 }
 
 .btn-remove:hover,
@@ -333,7 +343,6 @@ button:active {
   font-weight: 500;
   color: var(--tertiary-text);
   background: var(--tertiary);
-  border: none;
   border-radius: var(--radius-btn);
   outline: none;
   cursor: pointer;
