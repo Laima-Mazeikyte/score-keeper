@@ -176,7 +176,7 @@ function setupPlayerNameEditingFor(card) {
   el.addEventListener('focus', function () {
     row.classList.add('editing');
     if (el.value.length > 0) {
-      el.select();
+      setTimeout(function () { el.select(); }, 0);
     }
   });
   el.addEventListener('keydown', function (e) {
@@ -204,10 +204,9 @@ function setupScoreEditingFor(card) {
 
   var MAX_SCORE = 9999;
 
-  function placeCaretAtEnd() {
+  function selectAllScore() {
     var range = document.createRange();
     range.selectNodeContents(el);
-    range.collapse(false);
     var sel = window.getSelection();
     sel.removeAllRanges();
     sel.addRange(range);
@@ -222,7 +221,7 @@ function setupScoreEditingFor(card) {
   }
 
   el.addEventListener('focus', function () {
-    setTimeout(placeCaretAtEnd, 0);
+    setTimeout(selectAllScore, 0);
   });
   el.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
