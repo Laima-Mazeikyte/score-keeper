@@ -4,7 +4,7 @@ function getScore(playerId) {
 }
 
 const STORAGE_KEY = 'scoreKeeper';
-var MAX_PLAYERS = 10;
+var MAX_PLAYERS = 12;
 
 function setScore(playerId, value) {
   const el = document.getElementById(playerId + '-score');
@@ -123,22 +123,20 @@ function updateAddPlayerButtonVisibility() {
 function addPlayer() {
   if (getPlayerCount() >= MAX_PLAYERS) return;
   const playerId = getNextPlayerId();
-  const container = document.getElementById('players-container');
-  const addPlayerBtn = document.getElementById('btn-add-player');
+  const playersGrid = document.getElementById('players-grid');
   const card = createPlayerCard(playerId, getDefaultScore());
-  container.insertBefore(card, addPlayerBtn);
+  playersGrid.appendChild(card);
   setupPlayerNameEditingFor(card);
   setupScoreEditingFor(card);
   saveScores();
   updateAddPlayerButtonVisibility();
-  // Run again after layout so grid has updated (ensures hide at 10 players)
+  // Run again after layout so grid has updated (ensures hide at 12 players)
   setTimeout(updateAddPlayerButtonVisibility, 0);
 }
 
 function loadScores() {
   const data = getSavedState();
-  const container = document.getElementById('players-container');
-  const addPlayerBtn = document.getElementById('btn-add-player');
+  const playersGrid = document.getElementById('players-grid');
   var order = ['player-1', 'player-2'];
   var scores = {};
   var names = {};
@@ -159,7 +157,7 @@ function loadScores() {
   }
 
   // Rebuild all cards from saved order so every card behaves the same (no ghost cards, correct order).
-  container.querySelectorAll('.player-card').forEach(function (card) {
+  playersGrid.querySelectorAll('.player-card').forEach(function (card) {
     card.remove();
   });
   order.forEach(function (id) {
@@ -171,7 +169,7 @@ function loadScores() {
     var scoreEl = card.querySelector('.score');
     if (nameEl) nameEl.value = nameVal;
     if (scoreEl) scoreEl.textContent = scoreVal;
-    container.insertBefore(card, addPlayerBtn);
+    playersGrid.appendChild(card);
     setupPlayerNameEditingFor(card);
     setupScoreEditingFor(card);
   });
@@ -307,57 +305,79 @@ function resetAllScores() {
   saveScores();
 }
 
-function showDefaultScoreRow() {
-  const btn = document.getElementById('btn-set-default-score');
-  const controls = document.getElementById('default-score-controls');
-  const valueEl = document.getElementById('default-score-value');
-  if (btn && controls && valueEl) {
-    valueEl.textContent = getDefaultScore();
-    btn.hidden = true;
-    controls.hidden = false;
-  }
+function updateStartingScoreDisplayText() {
+  const display = document.getElementById('starting-score-display');
+  const input = document.getElementById('starting-score-input');
+  var value = getDefaultScore();
+  if (display) display.textContent = 'Starting score: ' + value;
+  if (input) input.value = String(value);
 }
 
-function updateStartingScoreButtonText() {
-  const btn = document.getElementById('btn-set-default-score');
-  if (btn) btn.textContent = 'Starting score: ' + getDefaultScore();
-}
+function setupStartingScoreEditing() {
+  const wrap = document.querySelector('.starting-score-wrap');
+  const display = document.getElementById('starting-score-display');
+  const input = document.getElementById('starting-score-input');
+  if (!wrap || !display || !input) return;
 
-function hideDefaultScoreControls() {
-  const btn = document.getElementById('btn-set-default-score');
-  const controls = document.getElementById('default-score-controls');
-  if (btn && controls) {
-    controls.hidden = true;
-    btn.hidden = false;
-    updateStartingScoreButtonText();
-  }
-}
-
-function saveDefaultScore() {
-  const valueEl = document.getElementById('default-score-value');
-  if (valueEl) {
-    setDefaultScore(valueEl.textContent);
-    hideDefaultScoreControls();
+  function commitScore() {
+    var raw = (input.value || '').replace(/\D/g, '');
+    var n = Math.max(0, Math.min(9999, parseInt(raw, 10) || 0));
+    setDefaultScore(n);
+    input.value = String(n);
+    updateStartingScoreDisplayText();
+    wrap.classList.remove('editing');
+    input.setAttribute('hidden', '');
     saveScores();
   }
+
+  function syncInputSize() {
+    var len = (input.value || '').replace(/\D/g, '').length || 1;
+    input.size = Math.max(1, Math.min(4, len));
+  }
+
+  display.addEventListener('click', function () {
+    wrap.classList.add('editing');
+    input.removeAttribute('hidden');
+    input.value = String(getDefaultScore());
+    syncInputSize();
+    setTimeout(function () {
+      input.focus();
+      input.select();
+    }, 0);
+  });
+
+  display.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      display.click();
+    }
+  });
+
+  input.addEventListener('input', syncInputSize);
+
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      commitScore();
+      return;
+    }
+    if (e.key.length === 1 && !/\d/.test(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault();
+    }
+    if (e.key.length === 1 && /\d/.test(e.key)) {
+      var text = (input.value || '').replace(/\D/g, '') + (/\d/.test(e.key) ? e.key : '');
+      if (text.length > 4) e.preventDefault();
+    }
+  });
+
+  input.addEventListener('blur', commitScore);
 }
 
 loadScores();
-updateStartingScoreButtonText();
+updateStartingScoreDisplayText();
+setupStartingScoreEditing();
 setupPlayerNameEditing();
 setupScoreEditing();
 setupScoreButtons();
 document.getElementById('btn-add-player').addEventListener('click', addPlayer);
 document.getElementById('btn-reset-score').addEventListener('click', resetAllScores);
-document.getElementById('btn-set-default-score').addEventListener('click', showDefaultScoreRow);
-document.getElementById('btn-save-default-score').addEventListener('click', saveDefaultScore);
-
-var defaultScoreValueEl = document.getElementById('default-score-value');
-document.getElementById('btn-default-minus').addEventListener('click', function () {
-  var n = Math.max(0, (parseInt(defaultScoreValueEl.textContent, 10) || 0) - 1);
-  defaultScoreValueEl.textContent = n;
-});
-document.getElementById('btn-default-plus').addEventListener('click', function () {
-  var n = (parseInt(defaultScoreValueEl.textContent, 10) || 0) + 1;
-  defaultScoreValueEl.textContent = n;
-});

@@ -7,48 +7,45 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="page-header">
-    <h1>Game night</h1>
-  </header>
-  <div class="players-container" id="players-container">
-    <section id="player-1" class="player-card">
-      <div class="player-name-row">
-        <input type="text" id="player-1-name" class="player-name" data-player="player-1" placeholder="+ Add player name" aria-label="Player 1 name" maxlength="30" autocomplete="off">
-      </div>
-      <div class="score-controls">
-        <button type="button" class="btn-secondary score-btn btn-decrement" data-player="player-1" aria-label="Decrease score">−</button>
-        <div id="player-1-score" class="score" contenteditable="true" data-player="player-1">0</div>
-        <button type="button" class="btn-secondary score-btn btn-increment" data-player="player-1" aria-label="Increase score">+</button>
-      </div>
-      <button type="button" class="btn-remove" data-player="player-1" aria-label="Remove player">Remove</button>
-    </section>
-
-    <section id="player-2" class="player-card">
-      <div class="player-name-row">
-        <input type="text" id="player-2-name" class="player-name" data-player="player-2" placeholder="+ Add player name" aria-label="Player 2 name" maxlength="30" autocomplete="off">
-      </div>
-      <div class="score-controls">
-        <button type="button" class="btn-secondary score-btn btn-decrement" data-player="player-2" aria-label="Decrease score">−</button>
-        <div id="player-2-score" class="score" contenteditable="true" data-player="player-2">0</div>
-        <button type="button" class="btn-secondary score-btn btn-increment" data-player="player-2" aria-label="Increase score">+</button>
-      </div>
-      <button type="button" class="btn-remove" data-player="player-2" aria-label="Remove player">Remove</button>
-    </section>
-
-    <button type="button" class="add-player-card" id="btn-add-player">Add player</button>
-  </div>
-
-  <div class="actions-row">
-    <div class="actions-center">
-      <button type="button" class="btn-tertiary" id="btn-reset-score">Reset</button>
-      <div class="default-score-slot" id="default-score-slot">
-        <button type="button" class="btn-tertiary" id="btn-set-default-score">Starting score: 0</button>
-        <div class="default-score-controls" id="default-score-controls" hidden>
-          <button type="button" class="btn-secondary default-score-btn" id="btn-default-minus" aria-label="Decrease default score">−</button>
-          <span class="default-score-value" id="default-score-value">0</span>
-          <button type="button" class="btn-secondary default-score-btn" id="btn-default-plus" aria-label="Increase default score">+</button>
-          <button type="button" class="btn-save" id="btn-save-default-score">Save</button>
+  <div class="content-wrap">
+    <header class="page-header">
+      <h1>Game night</h1>
+      <div class="header-actions">
+        <button type="button" class="btn-add-player-header" id="btn-add-player">+ Add player</button>
+        <button type="button" class="btn-tertiary" id="btn-reset-score">Reset score</button>
+        <div class="default-score-slot" id="default-score-slot">
+          <div class="starting-score-wrap">
+            <div class="starting-score-display btn-tertiary" id="starting-score-display" tabindex="0" role="button" aria-label="Starting score">Starting score: 0</div>
+            <input type="text" class="starting-score-input btn-tertiary" id="starting-score-input" value="0" inputmode="numeric" pattern="[0-9]*" aria-label="Starting score" maxlength="4" hidden>
+          </div>
         </div>
+      </div>
+    </header>
+    <div class="players-container" id="players-container">
+      <div class="players-grid" id="players-grid">
+      <section id="player-1" class="player-card">
+        <div class="player-name-row">
+          <input type="text" id="player-1-name" class="player-name" data-player="player-1" placeholder="+ Add player name" aria-label="Player 1 name" maxlength="30" autocomplete="off">
+        </div>
+        <div class="score-controls">
+          <button type="button" class="btn-secondary score-btn btn-decrement" data-player="player-1" aria-label="Decrease score">−</button>
+          <div id="player-1-score" class="score" contenteditable="true" data-player="player-1">0</div>
+          <button type="button" class="btn-secondary score-btn btn-increment" data-player="player-1" aria-label="Increase score">+</button>
+        </div>
+        <button type="button" class="btn-remove" data-player="player-1" aria-label="Remove player">Remove</button>
+      </section>
+
+      <section id="player-2" class="player-card">
+        <div class="player-name-row">
+          <input type="text" id="player-2-name" class="player-name" data-player="player-2" placeholder="+ Add player name" aria-label="Player 2 name" maxlength="30" autocomplete="off">
+        </div>
+        <div class="score-controls">
+          <button type="button" class="btn-secondary score-btn btn-decrement" data-player="player-2" aria-label="Decrease score">−</button>
+          <div id="player-2-score" class="score" contenteditable="true" data-player="player-2">0</div>
+          <button type="button" class="btn-secondary score-btn btn-increment" data-player="player-2" aria-label="Increase score">+</button>
+        </div>
+        <button type="button" class="btn-remove" data-player="player-2" aria-label="Remove player">Remove</button>
+      </section>
       </div>
     </div>
   </div>

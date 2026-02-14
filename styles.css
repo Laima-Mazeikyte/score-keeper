@@ -25,7 +25,8 @@
   --radius: 12px;
   --radius-btn: 10px;
   --shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-  --card-max: 400px;
+  /* 3 cards + 2 gaps (--space-6) fill --content-max exactly */
+  --card-max: calc((var(--content-max) - 2 * var(--space-6)) / 3);
   --card-min: 280px;
   --content-max: 1280px;
 }
@@ -49,43 +50,102 @@ body {
   flex-direction: column;
 }
 
-/* Page header: centered title */
+/* Shared width for header + player grid so they align; flex so players area can grow and center */
+.content-wrap {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Page header: title left, Add player right */
 .page-header {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
   margin-bottom: var(--space-8);
+  flex-wrap: wrap;
 }
 .page-header h1 {
   margin: 0;
-  font-size: 1.75rem;
-  font-weight: 600;
+  font-size: 2.75rem;
+  font-weight: 800;
   color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.btn-add-player-header {
+  height: 44px;
+  background: var(--tertiary);
+  color: var(--tertiary-text);
+  flex-shrink: 0;
+}
+.btn-add-player-header:hover {
+  background: var(--tertiary-hover);
 }
 
-/* Content area: natural height; actions row pushed to bottom via margin-top: auto */
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+/* Content area: grows to fill space, centers grid vertically and horizontally */
 .players-container {
   width: 100%;
+  margin-bottom: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 0;
 }
 
-/* Full-width grid: as many cards per row as fit, all same width; fill from left */
-.players-container {
-  margin-bottom: var(--space-8);
+/* Card grid: max 3 columns on desktop (that width = card max); fewer on small screens */
+.players-grid {
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--card-min), 1fr));
   gap: var(--space-6);
+}
+
+@media (min-width: 960px) {
+  .players-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-6);
+  }
+
+  .players-grid .player-card {
+    flex: 0 1 var(--card-max);
+    min-width: var(--card-min);
+    max-width: var(--card-max);
+    width: auto;
+  }
 }
 
 .player-card {
   min-width: 0;
-  aspect-ratio: 1 / 1;
+  width: 100%;
+  aspect-ratio: auto;
   background: var(--surface);
   border-radius: var(--radius);
-  padding: var(--space-6) var(--space-6);
+  padding: var(--space-4);
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: space-between;
-  gap: var(--space-4);
+  justify-content: flex-start;
+  gap: var(--space-3);
 }
 
 .player-name-row {
@@ -253,45 +313,75 @@ button:active {
 /* Slot where "Set a default score" button is replaced by the controls – fixed height so row doesn’t shift */
 .default-score-slot {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-3);
-  min-height: var(--space-10);
 }
 
-.default-score-controls {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: var(--space-2);
+.starting-score-wrap {
+  position: relative;
+  height: 44px;
+  width: fit-content;
+  min-width: 0;
 }
 
-.default-score-controls[hidden] {
-  display: none !important;
-}
-
-/* Minus/plus: secondary look, same total size as tertiary Save (smaller padding to offset 2px border) */
-.default-score-controls .default-score-btn {
-  padding: calc(var(--space-3) - 2px) calc(var(--space-4) - 2px);
-  background: var(--secondary);
-  color: var(--secondary-border);
-  border: 2px solid var(--secondary-border);
+.starting-score-display,
+.starting-score-input {
+  height: 44px;
+  margin: 0;
+  padding: 0 var(--space-4);
+  font-family: inherit;
   font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--tertiary-text);
+  background: var(--tertiary);
+  border: none;
+  border-radius: var(--radius-btn);
+  outline: none;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
 }
 
-.default-score-controls .default-score-btn:hover {
-  background: var(--secondary-hover);
-}
-
-/* Number: same style as player name; compact line-height so slot height stays single line */
-.default-score-value {
-  font-size: 1.125rem;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--text);
-  min-width: var(--space-8);
+.starting-score-display {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 0 var(--space-1);
+  white-space: nowrap;
+}
+
+.starting-score-display:hover {
+  background: var(--tertiary-hover);
+}
+
+.starting-score-input {
+  cursor: text;
+  text-align: center;
+  display: none;
+  width: auto;
+  min-width: 2ch;
+}
+
+.starting-score-input::-webkit-outer-spin-button,
+.starting-score-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.starting-score-wrap.editing .starting-score-display {
+  display: none;
+}
+
+.starting-score-wrap.editing .starting-score-input {
+  display: inline-block;
+  border: 1px solid var(--primary);
+  background: var(--primary-bg-subtle);
+  color: var(--text);
+}
+
+.starting-score-wrap.editing .starting-score-input:hover {
+  background: var(--primary-bg-subtle);
 }
 
 .player-card .score-controls + .btn-remove {
@@ -302,30 +392,8 @@ button:active {
   margin-top: var(--space-1);
 }
 
-/* Add player: same shape and size as .player-card (grid cell + aspect-ratio) */
-.add-player-card {
-  min-width: 0;
-  aspect-ratio: 1 / 1;
-  background: transparent;
-  border: 2px dashed var(--primary-border-muted);
-  border-radius: var(--radius);
-  color: var(--text-muted);
-  font-size: 1rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.add-player-card:hover {
-  background: var(--tertiary-hover);
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-/* When hidden (10 players), remove from layout completely */
-.add-player-card[hidden] {
+/* Add player in header: hidden at 12 players */
+.page-header #btn-add-player[hidden] {
   display: none !important;
 }
 
@@ -334,26 +402,13 @@ button:active {
     padding: var(--space-6) var(--space-4) var(--space-8);
   }
 
-  .players-container {
+  .players-grid {
     grid-template-columns: 1fr;
     justify-items: center;
   }
 
-  .player-card,
-  .add-player-card {
+  .players-grid .player-card {
     width: 100%;
-  }
-
-  .player-card {
-    aspect-ratio: auto;
-    justify-content: flex-start;
-    padding: var(--space-4);
-    gap: var(--space-3);
-  }
-
-  .add-player-card {
-    aspect-ratio: auto;
-    min-height: 140px;
   }
 
   .player-name-row {
