@@ -4,6 +4,7 @@ function getScore(playerId) {
 }
 
 const STORAGE_KEY = 'scoreKeeper';
+var MAX_PLAYERS = 10;
 
 function setScore(playerId, value) {
   const el = document.getElementById(playerId + '-score');
@@ -106,7 +107,21 @@ function createPlayerCard(playerId, initialScore) {
   return section;
 }
 
+function getPlayerCount() {
+  const container = document.getElementById('players-container');
+  return container ? container.querySelectorAll('.player-card').length : 0;
+}
+
+function updateAddPlayerButtonVisibility() {
+  const addPlayerBtn = document.getElementById('btn-add-player');
+  if (!addPlayerBtn) return;
+  var atLimit = getPlayerCount() >= MAX_PLAYERS;
+  addPlayerBtn.hidden = atLimit;
+  addPlayerBtn.setAttribute('aria-hidden', atLimit ? 'true' : 'false');
+}
+
 function addPlayer() {
+  if (getPlayerCount() >= MAX_PLAYERS) return;
   const playerId = getNextPlayerId();
   const container = document.getElementById('players-container');
   const addPlayerBtn = document.getElementById('btn-add-player');
@@ -115,6 +130,9 @@ function addPlayer() {
   setupPlayerNameEditingFor(card);
   setupScoreEditingFor(card);
   saveScores();
+  updateAddPlayerButtonVisibility();
+  // Run again after layout so grid has updated (ensures hide at 10 players)
+  setTimeout(updateAddPlayerButtonVisibility, 0);
 }
 
 function loadScores() {
@@ -126,7 +144,7 @@ function loadScores() {
   var names = {};
 
   if (data) {
-    order = Array.isArray(data.playerOrder) ? data.playerOrder : order;
+    order = Array.isArray(data.playerOrder) ? data.playerOrder.slice(0, MAX_PLAYERS) : order;
     scores = data.scores || {};
     names = data.names || {};
     if (typeof data.defaultScore === 'number' && data.defaultScore >= 0) {
@@ -157,6 +175,7 @@ function loadScores() {
     setupPlayerNameEditingFor(card);
     setupScoreEditingFor(card);
   });
+  updateAddPlayerButtonVisibility();
 }
 
 function setupPlayerNameEditingFor(card) {
@@ -271,6 +290,7 @@ function setupScoreButtons() {
       if (card) {
         card.remove();
         saveScores();
+        updateAddPlayerButtonVisibility();
       }
     }
   });
@@ -298,12 +318,18 @@ function showDefaultScoreRow() {
   }
 }
 
+function updateStartingScoreButtonText() {
+  const btn = document.getElementById('btn-set-default-score');
+  if (btn) btn.textContent = 'Starting score: ' + getDefaultScore();
+}
+
 function hideDefaultScoreControls() {
   const btn = document.getElementById('btn-set-default-score');
   const controls = document.getElementById('default-score-controls');
   if (btn && controls) {
     controls.hidden = true;
     btn.hidden = false;
+    updateStartingScoreButtonText();
   }
 }
 
@@ -317,6 +343,7 @@ function saveDefaultScore() {
 }
 
 loadScores();
+updateStartingScoreButtonText();
 setupPlayerNameEditing();
 setupScoreEditing();
 setupScoreButtons();

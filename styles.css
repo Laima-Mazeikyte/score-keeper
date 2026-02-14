@@ -45,10 +45,23 @@ body {
   font-size: 16px;
   line-height: 1.5;
   padding: var(--space-8) var(--space-6) var(--space-12);
+  display: flex;
+  flex-direction: column;
 }
 
-/* Content area: buttons and cards share same max-width and alignment */
-.actions-row,
+/* Page header: centered title */
+.page-header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+.page-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Content area: natural height; actions row pushed to bottom via margin-top: auto */
 .players-container {
   width: 100%;
 }
@@ -207,16 +220,18 @@ button:active {
 .actions-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: var(--space-3);
-  margin: 0 auto var(--space-6);
+  margin-top: auto;
+  padding-top: var(--space-6);
 }
 
-.actions-left {
+.actions-center {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: var(--space-3);
 }
 
@@ -287,11 +302,10 @@ button:active {
   margin-top: var(--space-1);
 }
 
-/* Add player: empty card placeholder in the grid */
+/* Add player: same shape and size as .player-card (grid cell + aspect-ratio) */
 .add-player-card {
   min-width: 0;
-  /* No spacing token for 140px; kept for add-card proportion */
-  min-height: 140px;
+  aspect-ratio: 1 / 1;
   background: transparent;
   border: 2px dashed var(--primary-border-muted);
   border-radius: var(--radius);
@@ -308,6 +322,11 @@ button:active {
   background: var(--tertiary-hover);
   border-color: var(--primary);
   color: var(--primary);
+}
+
+/* When hidden (10 players), remove from layout completely */
+.add-player-card[hidden] {
+  display: none !important;
 }
 
 @media (max-width: 640px) {
@@ -330,6 +349,11 @@ button:active {
     justify-content: flex-start;
     padding: var(--space-4);
     gap: var(--space-3);
+  }
+
+  .add-player-card {
+    aspect-ratio: auto;
+    min-height: 140px;
   }
 
   .player-name-row {

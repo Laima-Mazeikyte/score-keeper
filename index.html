@@ -7,21 +7,9 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="actions-row">
-    <div class="actions-left">
-      <button type="button" class="btn-tertiary" id="btn-reset-score">Reset</button>
-    </div>
-    <div class="default-score-slot" id="default-score-slot">
-      <button type="button" class="btn-tertiary" id="btn-set-default-score">Starting score</button>
-      <div class="default-score-controls" id="default-score-controls" hidden>
-        <button type="button" class="btn-secondary default-score-btn" id="btn-default-minus" aria-label="Decrease default score">−</button>
-        <span class="default-score-value" id="default-score-value">0</span>
-        <button type="button" class="btn-secondary default-score-btn" id="btn-default-plus" aria-label="Increase default score">+</button>
-        <button type="button" class="btn-save" id="btn-save-default-score">Save</button>
-      </div>
-    </div>
-  </div>
-
+  <header class="page-header">
+    <h1>Game night</h1>
+  </header>
   <div class="players-container" id="players-container">
     <section id="player-1" class="player-card">
       <div class="player-name-row">
@@ -48,6 +36,21 @@
     </section>
 
     <button type="button" class="add-player-card" id="btn-add-player">Add player</button>
+  </div>
+
+  <div class="actions-row">
+    <div class="actions-center">
+      <button type="button" class="btn-tertiary" id="btn-reset-score">Reset</button>
+      <div class="default-score-slot" id="default-score-slot">
+        <button type="button" class="btn-tertiary" id="btn-set-default-score">Starting score: 0</button>
+        <div class="default-score-controls" id="default-score-controls" hidden>
+          <button type="button" class="btn-secondary default-score-btn" id="btn-default-minus" aria-label="Decrease default score">−</button>
+          <span class="default-score-value" id="default-score-value">0</span>
+          <button type="button" class="btn-secondary default-score-btn" id="btn-default-plus" aria-label="Increase default score">+</button>
+          <button type="button" class="btn-save" id="btn-save-default-score">Save</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
