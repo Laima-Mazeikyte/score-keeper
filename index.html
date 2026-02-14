@@ -12,12 +12,12 @@
       <button type="button" class="btn-tertiary" id="btn-reset-score">Reset</button>
     </div>
     <div class="default-score-slot" id="default-score-slot">
-      <button type="button" class="btn-tertiary" id="btn-set-default-score">Set a starting score</button>
+      <button type="button" class="btn-tertiary" id="btn-set-default-score">Starting score</button>
       <div class="default-score-controls" id="default-score-controls" hidden>
         <button type="button" class="btn-secondary default-score-btn" id="btn-default-minus" aria-label="Decrease default score">−</button>
         <span class="default-score-value" id="default-score-value">0</span>
         <button type="button" class="btn-secondary default-score-btn" id="btn-default-plus" aria-label="Increase default score">+</button>
-        <button type="button" class="btn-secondary default-score-btn" id="btn-save-default-score">Save</button>
+        <button type="button" class="btn-save" id="btn-save-default-score">Save</button>
       </div>
     </div>
   </div>
@@ -25,8 +25,7 @@
   <div class="players-container" id="players-container">
     <section id="player-1" class="player-card">
       <div class="player-name-row">
-        <h2 id="player-1-name" class="player-name" contenteditable="true" spellcheck="false" data-player="player-1" data-placeholder="+ Add player name"></h2>
-        <button type="button" class="btn-save" aria-label="Save name">Save</button>
+        <input type="text" id="player-1-name" class="player-name" data-player="player-1" placeholder="+ Add player name" aria-label="Player 1 name" maxlength="30" autocomplete="off">
       </div>
       <div class="score-controls">
         <button type="button" class="btn-secondary score-btn btn-decrement" data-player="player-1" aria-label="Decrease score">−</button>
@@ -38,8 +37,7 @@
 
     <section id="player-2" class="player-card">
       <div class="player-name-row">
-        <h2 id="player-2-name" class="player-name" contenteditable="true" spellcheck="false" data-player="player-2" data-placeholder="+ Add player name"></h2>
-        <button type="button" class="btn-save" aria-label="Save name">Save</button>
+        <input type="text" id="player-2-name" class="player-name" data-player="player-2" placeholder="+ Add player name" aria-label="Player 2 name" maxlength="30" autocomplete="off">
       </div>
       <div class="score-controls">
         <button type="button" class="btn-secondary score-btn btn-decrement" data-player="player-2" aria-label="Decrease score">−</button>

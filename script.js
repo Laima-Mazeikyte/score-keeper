@@ -10,8 +10,6 @@ function setScore(playerId, value) {
   if (el) el.textContent = Math.max(0, Math.min(9999, value));
 }
 
-const PLACEHOLDER_TEXT = '+ Add player name';
-
 function getSavedState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -40,8 +38,7 @@ function getScoreFromCard(card) {
 function getPlayerNameFromCard(card) {
   const el = card.querySelector('.player-name');
   if (!el) return '';
-  const text = (el.textContent || '').trim();
-  return text === '' || text === PLACEHOLDER_TEXT ? '' : text;
+  return (el.value || '').trim();
 }
 
 function saveScores() {
@@ -67,15 +64,13 @@ function saveScores() {
 
 function getPlayerName(playerId) {
   const el = document.getElementById(playerId + '-name');
-  if (!el) return '';
-  const text = (el.textContent || '').trim();
-  return text === '' || text === PLACEHOLDER_TEXT ? '' : text;
+  return el ? (el.value || '').trim() : '';
 }
 
 function setPlayerName(playerId, value) {
   const el = document.getElementById(playerId + '-name');
   if (!el) return;
-  el.textContent = (value && value.trim()) ? value.trim() : '';
+  el.value = (value && value.trim()) ? value.trim() : '';
 }
 
 function getNextPlayerId() {
@@ -97,10 +92,10 @@ function createPlayerCard(playerId, initialScore) {
   const section = document.createElement('section');
   section.id = playerId;
   section.className = 'player-card';
+  var ariaLabel = 'Player ' + playerId.replace('player-', '') + ' name';
   section.innerHTML =
     '<div class="player-name-row">' +
-      '<h2 id="' + playerId + '-name" class="player-name" contenteditable="true" spellcheck="false" data-player="' + playerId + '" data-placeholder="+ Add player name"></h2>' +
-      '<button type="button" class="btn-save" aria-label="Save name">Save</button>' +
+      '<input type="text" id="' + playerId + '-name" class="player-name" data-player="' + playerId + '" placeholder="+ Add player name" aria-label="' + ariaLabel + '" maxlength="30" autocomplete="off">' +
     '</div>' +
     '<div class="score-controls">' +
       '<button type="button" class="btn-secondary score-btn btn-decrement" data-player="' + playerId + '" aria-label="Decrease score">−</button>' +
@@ -156,7 +151,7 @@ function loadScores() {
     var scoreVal = typeof scores[id] === 'number' ? scores[id] : score;
     var nameEl = card.querySelector('.player-name');
     var scoreEl = card.querySelector('.score');
-    if (nameEl) nameEl.textContent = nameVal;
+    if (nameEl) nameEl.value = nameVal;
     if (scoreEl) scoreEl.textContent = scoreVal;
     container.insertBefore(card, addPlayerBtn);
     setupPlayerNameEditingFor(card);
@@ -170,55 +165,29 @@ function setupPlayerNameEditingFor(card) {
   el._nameEditingSetup = true;
   const playerId = el.getAttribute('data-player');
   const row = el.closest('.player-name-row');
-  const saveBtn = row && row.querySelector('.btn-save');
-
-  function selectAllText() {
-    var range = document.createRange();
-    range.selectNodeContents(el);
-    var sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-  }
-
-  function enterEditMode() {
-    row.classList.add('editing');
-    var currentText = (el.textContent || '').trim();
-    if (currentText === '' || currentText === PLACEHOLDER_TEXT) {
-      el.textContent = '';
-      el.focus();
-    } else {
-      setTimeout(selectAllText, 0);
-    }
-  }
-
-  function exitEditMode() {
-    row.classList.remove('editing');
-    el.blur();
-  }
 
   function saveName() {
-    const text = (el.textContent || '').trim();
+    const text = (el.value || '').trim();
     setPlayerName(playerId, text);
     saveScores();
-    exitEditMode();
+    row.classList.remove('editing');
   }
 
-  el.addEventListener('focus', enterEditMode);
+  el.addEventListener('focus', function () {
+    row.classList.add('editing');
+    if (el.value.length > 0) {
+      el.select();
+    }
+  });
   el.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
       e.preventDefault();
-      saveName();
+      el.blur();
     }
   });
   el.addEventListener('blur', function () {
-    if (!saveBtn || saveBtn.matches(':hover')) return;
     saveName();
   });
-  if (saveBtn) {
-    saveBtn.addEventListener('click', function () {
-      saveName();
-    });
-  }
 }
 
 function setupPlayerNameEditing() {
