@@ -1,0 +1,27 @@
+/**
+ * Primitive color palette (gray + blue).
+ * Reference only — map to semantic tokens in your theme.
+ */
+:root {
+  /* Gray scale (Tokyo Night–inspired) */
+  --gray-50: #f4f4f8;
+  --gray-100: #e8e8f0;
+  --gray-200: #c0caf5;
+  --gray-300: #a9b1d6;
+  --gray-400: #9aa2c0;
+  --gray-500: #565f89;
+  --gray-600: #43456a;
+  --gray-700: #363b5a;
+  --gray-800: #2d3142;
+  --gray-900: #24283b;
+  --gray-950: #1a1b26;
+
+  /* Blue scale (accent) */
+  --blue-50: #eef2ff;
+  --blue-100: #dce4fc;
+  --blue-200: #b8c8f8;
+  --blue-300: #9db4f4;
+  --blue-400: #89b4fa;
+  --blue-500: #7aa2f7;
+  --blue-600: #6b8ee8;
+}

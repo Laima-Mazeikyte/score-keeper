@@ -1,0 +1,6 @@
+/**
+ * Design tokens entry point.
+ * Link this file to load colors + spacing (e.g. in index.html or via @import).
+ */
+@import "colors.css";
+@import "spacing.css";
