@@ -76,7 +76,7 @@ body {
 }
 .page-header h1 {
   margin: 0;
-  font-family: "Scarbes", sans-serif;
+  font-family: "Ranchers", sans-serif;
   font-size: 4.5rem;
   font-weight: 300;
   color: var(--text);
@@ -163,9 +163,10 @@ body {
 
 .player-name {
   margin: 0;
-  font-family: inherit;
+  font-family: "Ranchers", sans-serif;
   font-size: 1.125rem;
   font-weight: 600;
+  letter-spacing: 0.08em;
   line-height: 44px;
   color: var(--text);
   flex: 1;
@@ -212,7 +213,8 @@ body {
 }
 
 .score {
-  font-size: 3rem;
+  font-family: "Ranchers", sans-serif;
+  font-size: 4.5rem;
   font-weight: 700;
   color: var(--blue-50);
   text-align: center;
@@ -324,10 +326,13 @@ button:active {
   flex-shrink: 0;
 }
 
-.btn-remove:hover,
 .btn-save:hover,
 .btn-tertiary:hover {
   background: var(--tertiary-hover);
+}
+
+.btn-remove:hover {
+  background: var(--input-hover-bg);
 }
 
 /* Slot where "Set a default score" button is replaced by the controls – fixed height so row doesn’t shift */
@@ -416,6 +421,8 @@ button:active {
 
 .player-card .btn-remove {
   margin-top: var(--space-1);
+  align-self: center;
+  width: fit-content;
 }
 
 /* Add player in header: hidden at 12 players */
