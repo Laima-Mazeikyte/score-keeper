@@ -566,6 +566,30 @@ button:active {
     padding: var(--space-6) var(--space-4) var(--space-8);
   }
 
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+
+  .header-actions > * {
+    flex-shrink: 0;
+  }
+
+  .starting-score-wrap {
+    min-width: min-content;
+  }
+
+  .starting-score-display,
+  .starting-score-input {
+    min-width: min-content;
+  }
+
   .players-grid {
     grid-template-columns: 1fr;
     justify-items: center;
