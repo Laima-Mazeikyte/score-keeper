@@ -149,19 +149,19 @@ body {
   gap: var(--space-3);
 }
 
-/* Card backgrounds: one secondary colour per card, exact order from tokens/colors.css */
-.players-grid .player-card:nth-child(1)  { background: #699CBF; }  /* secondary-1 */
-.players-grid .player-card:nth-child(2)  { background: #61384A; }  /* secondary-2 */
-.players-grid .player-card:nth-child(3)  { background: #617627; }  /* secondary-3 */
-.players-grid .player-card:nth-child(4)  { background: #F675D2; }  /* secondary-4 */
-.players-grid .player-card:nth-child(5)  { background: #FBA514; }  /* secondary-5 */
-.players-grid .player-card:nth-child(6)  { background: #786CC6; }  /* secondary-6 */
-.players-grid .player-card:nth-child(7)  { background: #A84010; }  /* secondary-7 */
-.players-grid .player-card:nth-child(8)  { background: #5E5203; }  /* secondary-8 */
-.players-grid .player-card:nth-child(9)  { background: #2D6B7C; }  /* secondary-9 */
-.players-grid .player-card:nth-child(10) { background: #544B8A; }  /* secondary-10 */
-.players-grid .player-card:nth-child(11) { background: #F05B17; }  /* secondary-11 */
-.players-grid .player-card:nth-child(12) { background: #AC5293; }  /* secondary-12 */
+/* Card backgrounds: one secondary colour per card, keyed by data-card-color (tokens/colors.css) */
+.players-grid .player-card[data-card-color="1"]  { background: var(--secondary-1); }
+.players-grid .player-card[data-card-color="2"]  { background: var(--secondary-2); }
+.players-grid .player-card[data-card-color="3"]  { background: var(--secondary-3); }
+.players-grid .player-card[data-card-color="4"]  { background: var(--secondary-4); }
+.players-grid .player-card[data-card-color="5"]  { background: var(--secondary-5); }
+.players-grid .player-card[data-card-color="6"]  { background: var(--secondary-6); }
+.players-grid .player-card[data-card-color="7"]  { background: var(--secondary-7); }
+.players-grid .player-card[data-card-color="8"]  { background: var(--secondary-8); }
+.players-grid .player-card[data-card-color="9"]  { background: var(--secondary-9); }
+.players-grid .player-card[data-card-color="10"] { background: var(--secondary-10); }
+.players-grid .player-card[data-card-color="11"] { background: var(--secondary-11); }
+.players-grid .player-card[data-card-color="12"] { background: var(--secondary-12); }
 
 .player-name-row {
   display: flex;

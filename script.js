@@ -5,6 +5,7 @@ function getScore(playerId) {
 
 const STORAGE_KEY = 'scoreKeeper';
 var MAX_PLAYERS = 12;
+var SECONDARY_INDICES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 function setScore(playerId, value) {
   const el = document.getElementById(playerId + '-score');
@@ -42,23 +43,54 @@ function getPlayerNameFromCard(card) {
   return (el.value || '').trim();
 }
 
+function getColorIndexFromCard(card) {
+  var raw = card.getAttribute('data-card-color');
+  var n = parseInt(raw, 10);
+  return (n >= 1 && n <= 12) ? n : null;
+}
+
+function getUsedColorIndices() {
+  const container = document.getElementById('players-container');
+  if (!container) return [];
+  const sections = container.querySelectorAll('.player-card');
+  var used = [];
+  sections.forEach(function (section) {
+    var idx = getColorIndexFromCard(section);
+    if (idx !== null) used.push(idx);
+  });
+  return used;
+}
+
+function getFirstAvailableColorIndex() {
+  var used = getUsedColorIndices();
+  for (var i = 0; i < SECONDARY_INDICES.length; i++) {
+    var idx = SECONDARY_INDICES[i];
+    if (used.indexOf(idx) === -1) return idx;
+  }
+  return null;
+}
+
 function saveScores() {
   const container = document.getElementById('players-container');
   const sections = container.querySelectorAll('.player-card');
   const playerOrder = [];
   const scores = {};
   const names = {};
+  const colorByPlayer = {};
   sections.forEach(function (section) {
     const id = section.id;
     if (!id || id.indexOf('player-') !== 0) return;
     playerOrder.push(id);
     scores[id] = getScoreFromCard(section);
     names[id] = getPlayerNameFromCard(section);
+    var colorIdx = getColorIndexFromCard(section);
+    if (colorIdx !== null) colorByPlayer[id] = colorIdx;
   });
   localStorage.setItem(STORAGE_KEY, JSON.stringify({
     playerOrder: playerOrder,
     scores: scores,
     names: names,
+    colorByPlayer: colorByPlayer,
     defaultScore: getDefaultScore()
   }));
 }
@@ -88,11 +120,13 @@ function getNextPlayerId() {
   return 'player-' + (max + 1);
 }
 
-function createPlayerCard(playerId, initialScore) {
+function createPlayerCard(playerId, initialScore, colorIndex) {
   var score = Math.max(0, parseInt(initialScore, 10) || 0);
   const section = document.createElement('section');
   section.id = playerId;
   section.className = 'player-card';
+  var idx = (colorIndex >= 1 && colorIndex <= 12) ? colorIndex : null;
+  if (idx !== null) section.setAttribute('data-card-color', String(idx));
   var ariaLabel = 'Player ' + playerId.replace('player-', '') + ' name';
   section.innerHTML =
     '<div class="player-name-row">' +
@@ -122,9 +156,11 @@ function updateAddPlayerButtonVisibility() {
 
 function addPlayer() {
   if (getPlayerCount() >= MAX_PLAYERS) return;
+  var colorIndex = getFirstAvailableColorIndex();
+  if (colorIndex === null) return;
   const playerId = getNextPlayerId();
   const playersGrid = document.getElementById('players-grid');
-  const card = createPlayerCard(playerId, getDefaultScore());
+  const card = createPlayerCard(playerId, getDefaultScore(), colorIndex);
   playersGrid.appendChild(card);
   setupPlayerNameEditingFor(card);
   setupScoreEditingFor(card);
@@ -141,10 +177,14 @@ function loadScores() {
   var scores = {};
   var names = {};
 
+  var colorByPlayer = {};
   if (data) {
     order = Array.isArray(data.playerOrder) ? data.playerOrder.slice(0, MAX_PLAYERS) : order;
     scores = data.scores || {};
     names = data.names || {};
+    if (data.colorByPlayer && typeof data.colorByPlayer === 'object') {
+      colorByPlayer = data.colorByPlayer;
+    }
     if (typeof data.defaultScore === 'number' && data.defaultScore >= 0) {
       defaultScore = data.defaultScore;
     }
@@ -160,9 +200,22 @@ function loadScores() {
   playersGrid.querySelectorAll('.player-card').forEach(function (card) {
     card.remove();
   });
-  order.forEach(function (id) {
+  var usedColorIndices = [];
+  order.forEach(function (id, indexInOrder) {
     const score = typeof scores[id] === 'number' ? scores[id] : getDefaultScore();
-    const card = createPlayerCard(id, score);
+    var colorIndex = (colorByPlayer[id] >= 1 && colorByPlayer[id] <= 12) ? colorByPlayer[id] : null;
+    if (colorIndex === null) {
+      // Legacy or missing: assign first available in palette order
+      for (var i = 0; i < SECONDARY_INDICES.length; i++) {
+        var idx = SECONDARY_INDICES[i];
+        if (usedColorIndices.indexOf(idx) === -1) {
+          colorIndex = idx;
+          break;
+        }
+      }
+    }
+    if (colorIndex !== null) usedColorIndices.push(colorIndex);
+    const card = createPlayerCard(id, score, colorIndex);
     var nameVal = typeof names[id] === 'string' ? names[id] : '';
     var scoreVal = typeof scores[id] === 'number' ? scores[id] : score;
     var nameEl = card.querySelector('.player-name');
