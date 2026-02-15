@@ -3,7 +3,7 @@
 /* --- Minimal game night (semantic theme from tokens) --- */
 :root {
   /* Colors from primitive tokens */
-  --bg: var(--gray-1000);
+  --bg: var(--gray-900);
   --surface: var(--gray-900);
   --surface-hover: var(--gray-800);
   --text: var(--blue-50);
@@ -25,7 +25,7 @@
   --input-border: var(--gray-50);
   --input-hover-bg: color-mix(in srgb, var(--gray-50) 10%, transparent);
   /* Layout (unchanged) */
-  --radius: 12px;
+  --radius: 20px;
   --radius-btn: 10px;
   --shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
   /* 3 cards + 2 gaps (--space-6) fill --content-max exactly */
@@ -81,6 +81,7 @@ body {
   font-weight: 300;
   color: var(--text);
   letter-spacing: 0.02em;
+  text-shadow: var(--score-shadow-x, 0) var(--score-shadow-y, 12px) 0 var(--gray-950);
 }
 .header-actions {
   display: flex;
@@ -132,8 +133,8 @@ body {
   aspect-ratio: auto;
   background: var(--surface);
   border-radius: var(--radius);
-  padding: var(--space-4);
-  box-shadow: var(--shadow);
+  padding: var(--space-4) var(--space-6);
+  box-shadow: var(--card-shadow-x, 0) var(--card-shadow-y, 18px) 0 0 var(--gray-950);
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -225,6 +226,7 @@ body {
   border-radius: var(--radius-btn);
   cursor: text;
   transition: border-color 0.15s ease, background 0.15s ease;
+  text-shadow: var(--score-shadow-x, 0) var(--score-shadow-y, 12px) 0 var(--gray-950);
 }
 
 .score:hover,
@@ -266,20 +268,24 @@ button:active {
   min-width: 0;
 }
 
-/* Score +/- buttons: fill row top-to-bottom; slight darker default so shape is visible, hover same as Add player */
+/* Score +/- buttons: fully rounded circles, no background, bordered, gray symbol */
 .score-controls .score-btn {
-  padding: 0 var(--space-4);
-  background: color-mix(in srgb, var(--blue-50) 20%, transparent);
-  color: var(--blue-50);
-  border: none;
-  font-size: 0.9375rem;
+  padding: 0;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gray-100);
+  border: 0.5px solid var(--blue-50);
+  font-family: "Ranchers", sans-serif;
+  font-size: 1.125rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .score-controls .score-btn:hover {
-  background: var(--primary-bg-hover);
+  background: color-mix(in srgb, var(--blue-200) 50%, transparent);
 }
 
 /* Secondary: Add player, Reset score */

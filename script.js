@@ -426,11 +426,94 @@ function setupStartingScoreEditing() {
   input.addEventListener('blur', commitScore);
 }
 
+var cursorX = null;
+var cursorY = null;
+var shadowUpdateScheduled = false;
+var CARD_SHADOW_OFFSET = 10;
+var SCORE_SHADOW_OFFSET = 8;
+
+function updateCursorShadows(clientX, clientY) {
+  var cards = document.querySelectorAll('.player-card');
+  var i, card, scoreEl, rect, centerX, centerY, dx, dy, len, scale, sx, sy;
+  var headerTitle = document.querySelector('.page-header h1');
+
+  for (i = 0; i < cards.length; i++) {
+    card = cards[i];
+    rect = card.getBoundingClientRect();
+    centerX = rect.left + rect.width / 2;
+    centerY = rect.top + rect.height / 2;
+    dx = clientX - centerX;
+    dy = clientY - centerY;
+    len = Math.sqrt(dx * dx + dy * dy) || 1;
+    scale = CARD_SHADOW_OFFSET / len;
+    sx = -dx * scale;
+    sy = -dy * scale;
+    card.style.setProperty('--card-shadow-x', sx + 'px');
+    card.style.setProperty('--card-shadow-y', sy + 'px');
+
+    scoreEl = card.querySelector('.score');
+    if (scoreEl) {
+      rect = scoreEl.getBoundingClientRect();
+      centerX = rect.left + rect.width / 2;
+      centerY = rect.top + rect.height / 2;
+      dx = clientX - centerX;
+      dy = clientY - centerY;
+      len = Math.sqrt(dx * dx + dy * dy) || 1;
+      scale = SCORE_SHADOW_OFFSET / len;
+      sx = -dx * scale;
+      sy = -dy * scale;
+      scoreEl.style.setProperty('--score-shadow-x', sx + 'px');
+      scoreEl.style.setProperty('--score-shadow-y', sy + 'px');
+    }
+  }
+
+  if (headerTitle) {
+    rect = headerTitle.getBoundingClientRect();
+    centerX = rect.left + rect.width / 2;
+    centerY = rect.top + rect.height / 2;
+    dx = clientX - centerX;
+    dy = clientY - centerY;
+    len = Math.sqrt(dx * dx + dy * dy) || 1;
+    scale = SCORE_SHADOW_OFFSET / len;
+    sx = -dx * scale;
+    sy = -dy * scale;
+    headerTitle.style.setProperty('--score-shadow-x', sx + 'px');
+    headerTitle.style.setProperty('--score-shadow-y', sy + 'px');
+  }
+
+  shadowUpdateScheduled = false;
+}
+
+function scheduleShadowUpdate() {
+  if (shadowUpdateScheduled) return;
+  shadowUpdateScheduled = true;
+  requestAnimationFrame(function () {
+    if (cursorX !== null && cursorY !== null) {
+      updateCursorShadows(cursorX, cursorY);
+    } else {
+      shadowUpdateScheduled = false;
+    }
+  });
+}
+
+function setupCursorShadows() {
+  document.addEventListener('mousemove', function (e) {
+    cursorX = e.clientX;
+    cursorY = e.clientY;
+    scheduleShadowUpdate();
+  });
+
+  var w = window.innerWidth;
+  var h = window.innerHeight;
+  updateCursorShadows(w / 2, h / 2);
+}
+
 loadScores();
 updateStartingScoreDisplayText();
 setupStartingScoreEditing();
 setupPlayerNameEditing();
 setupScoreEditing();
 setupScoreButtons();
+setupCursorShadows();
 document.getElementById('btn-add-player').addEventListener('click', addPlayer);
 document.getElementById('btn-reset-score').addEventListener('click', resetAllScores);
