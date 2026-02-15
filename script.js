@@ -6,6 +6,11 @@ function getScore(playerId) {
 const STORAGE_KEY = 'scoreKeeper';
 var MAX_PLAYERS = 12;
 var SECONDARY_INDICES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+var DEFAULT_PLAYER_NAMES = ['Sardine Player', 'Eggplant Player', 'Cucumber Player', 'Radish Player', 'Turmeric Player', 'Lilac Player', 'Pumpkin Player', 'Pickle Player', 'Kale Player', 'Grape Player', 'Pepper Player', 'Plum Player'];
+
+function getDefaultPlayerName(colorIndex) {
+  return (colorIndex >= 1 && colorIndex <= 12) ? DEFAULT_PLAYER_NAMES[colorIndex - 1] : '';
+}
 
 function setScore(playerId, value) {
   const el = document.getElementById(playerId + '-score');
@@ -127,10 +132,11 @@ function createPlayerCard(playerId, initialScore, colorIndex) {
   section.className = 'player-card';
   var idx = (colorIndex >= 1 && colorIndex <= 12) ? colorIndex : null;
   if (idx !== null) section.setAttribute('data-card-color', String(idx));
+  var defaultName = getDefaultPlayerName(idx);
   var ariaLabel = 'Player ' + playerId.replace('player-', '') + ' name';
   section.innerHTML =
     '<div class="player-name-row">' +
-      '<input type="text" id="' + playerId + '-name" class="player-name" data-player="' + playerId + '" placeholder="+ Add player name" aria-label="' + ariaLabel + '" maxlength="30" autocomplete="off">' +
+      '<input type="text" id="' + playerId + '-name" class="player-name" data-player="' + playerId + '" value="' + (defaultName.replace(/"/g, '&quot;')) + '" placeholder="Edit name" aria-label="' + ariaLabel + '" maxlength="30" autocomplete="off">' +
     '</div>' +
     '<div class="score-controls">' +
       '<button type="button" class="btn-secondary score-btn btn-decrement" data-player="' + playerId + '" aria-label="Decrease score">−</button>' +
@@ -217,6 +223,7 @@ function loadScores() {
     if (colorIndex !== null) usedColorIndices.push(colorIndex);
     const card = createPlayerCard(id, score, colorIndex);
     var nameVal = typeof names[id] === 'string' ? names[id] : '';
+    if (!nameVal.trim()) nameVal = getDefaultPlayerName(colorIndex);
     var scoreVal = typeof scores[id] === 'number' ? scores[id] : score;
     var nameEl = card.querySelector('.player-name');
     var scoreEl = card.querySelector('.score');
