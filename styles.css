@@ -21,6 +21,9 @@
   --primary-bg-subtle: color-mix(in srgb, var(--blue-500) 8%, transparent);
   --primary-bg-hover: color-mix(in srgb, var(--blue-300) 12%, transparent);
   --primary-border-muted: color-mix(in srgb, var(--blue-500) 40%, transparent);
+  /* Input states: dark grayscale border, hover = lightest gray 50% alpha */
+  --input-border: var(--gray-50);
+  --input-hover-bg: color-mix(in srgb, var(--gray-50) 10%, transparent);
   /* Layout (unchanged) */
   --radius: 12px;
   --radius-btn: 10px;
@@ -79,17 +82,6 @@ body {
   color: var(--text);
   letter-spacing: 0.02em;
 }
-.btn-add-player-header {
-  height: 44px;
-  background: var(--tertiary);
-  color: var(--tertiary-text);
-  flex-shrink: 0;
-  border: 1px solid color-mix(in srgb, var(--tertiary-text) 35%, transparent);
-}
-.btn-add-player-header:hover {
-  background: var(--tertiary-hover);
-}
-
 .header-actions {
   display: flex;
   flex-wrap: wrap;
@@ -201,19 +193,22 @@ body {
   opacity: 0;
 }
 
-.player-name:hover {
-  background: var(--tertiary-hover);
+.player-name:hover,
+.player-name:active {
+  background: var(--input-hover-bg);
 }
 
 .player-name:focus,
 .player-name-row.editing .player-name {
-  border-color: var(--primary);
-  background: var(--primary-bg-subtle);
+  border-color: var(--input-border);
+  background: var(--input-hover-bg);
 }
 
 .player-name:focus:hover,
-.player-name-row.editing .player-name:hover {
-  background: var(--primary-bg-subtle);
+.player-name:focus:active,
+.player-name-row.editing .player-name:hover,
+.player-name-row.editing .player-name:active {
+  background: var(--input-hover-bg);
 }
 
 .score {
@@ -230,13 +225,14 @@ body {
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.score:hover {
-  background: var(--primary-bg-hover);
+.score:hover,
+.score:active {
+  background: var(--input-hover-bg);
 }
 
 .score:focus {
-  border-color: var(--primary);
-  background: var(--primary-bg-subtle);
+  border-color: var(--input-border);
+  background: var(--input-hover-bg);
 }
 
 /* Button base */
@@ -322,10 +318,10 @@ button:active {
   color: var(--tertiary-text);
 }
 
-/* Very subtle border on header tertiary buttons only (Add player, Reset score, Starting score) */
-.page-header .btn-tertiary,
-.page-header .starting-score-display {
+/* Header tertiary controls: same border as inputs, no shrink */
+.page-header .btn-tertiary {
   border: 1px solid color-mix(in srgb, var(--tertiary-text) 35%, transparent);
+  flex-shrink: 0;
 }
 
 .btn-remove:hover,
@@ -374,8 +370,9 @@ button:active {
   white-space: nowrap;
 }
 
-.starting-score-display:hover {
-  background: var(--tertiary-hover);
+.starting-score-display:hover,
+.starting-score-display:active {
+  background: var(--input-hover-bg);
 }
 
 .starting-score-input {
@@ -384,6 +381,11 @@ button:active {
   display: none;
   width: auto;
   min-width: 2ch;
+}
+
+.starting-score-input:hover,
+.starting-score-input:active {
+  background: var(--input-hover-bg);
 }
 
 .starting-score-input::-webkit-outer-spin-button,
@@ -398,13 +400,14 @@ button:active {
 
 .starting-score-wrap.editing .starting-score-input {
   display: inline-block;
-  border: 1px solid var(--primary);
-  background: var(--primary-bg-subtle);
+  border: 1px solid var(--input-border);
+  background: var(--input-hover-bg);
   color: var(--text);
 }
 
-.starting-score-wrap.editing .starting-score-input:hover {
-  background: var(--primary-bg-subtle);
+.starting-score-wrap.editing .starting-score-input:hover,
+.starting-score-wrap.editing .starting-score-input:active {
+  background: var(--input-hover-bg);
 }
 
 .player-card .score-controls + .btn-remove {
