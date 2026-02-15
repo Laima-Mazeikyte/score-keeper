@@ -6,15 +6,15 @@
   --bg: var(--gray-1000);
   --surface: var(--gray-900);
   --surface-hover: var(--gray-800);
-  --text: var(--gray-200);
-  --text-muted: var(--blue-500);
+  --text: var(--blue-50);
+  --text-muted: var(--blue-50);
   --primary: var(--blue-500);
   --primary-hover: var(--blue-400);
   --primary-text: var(--gray-950);
   --secondary: transparent;
   --secondary-border: var(--blue-500);
   --tertiary: transparent;
-  --tertiary-text: var(--gray-300);
+  --tertiary-text: var(--blue-50);
   /* Alpha variants (color-mix from primitives) */
   --secondary-hover: color-mix(in srgb, var(--blue-500) 15%, transparent);
   --tertiary-hover: color-mix(in srgb, var(--gray-300) 12%, transparent);
@@ -149,6 +149,20 @@ body {
   gap: var(--space-3);
 }
 
+/* Card backgrounds: one secondary colour per card, exact order from tokens/colors.css */
+.players-grid .player-card:nth-child(1)  { background: #699CBF; }  /* secondary-1 */
+.players-grid .player-card:nth-child(2)  { background: #61384A; }  /* secondary-2 */
+.players-grid .player-card:nth-child(3)  { background: #617627; }  /* secondary-3 */
+.players-grid .player-card:nth-child(4)  { background: #F675D2; }  /* secondary-4 */
+.players-grid .player-card:nth-child(5)  { background: #FBA514; }  /* secondary-5 */
+.players-grid .player-card:nth-child(6)  { background: #786CC6; }  /* secondary-6 */
+.players-grid .player-card:nth-child(7)  { background: #A84010; }  /* secondary-7 */
+.players-grid .player-card:nth-child(8)  { background: #5E5203; }  /* secondary-8 */
+.players-grid .player-card:nth-child(9)  { background: #2D6B7C; }  /* secondary-9 */
+.players-grid .player-card:nth-child(10) { background: #544B8A; }  /* secondary-10 */
+.players-grid .player-card:nth-child(11) { background: #F05B17; }  /* secondary-11 */
+.players-grid .player-card:nth-child(12) { background: #AC5293; }  /* secondary-12 */
+
 .player-name-row {
   display: flex;
   align-items: center;
@@ -205,7 +219,7 @@ body {
 .score {
   font-size: 3rem;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--blue-50);
   text-align: center;
   letter-spacing: 0.02em;
   line-height: 1.2;
@@ -257,8 +271,8 @@ button:active {
 /* Score +/- buttons: fill row top-to-bottom; slight darker default so shape is visible, hover same as Add player */
 .score-controls .score-btn {
   padding: 0 var(--space-4);
-  background: var(--surface-hover);
-  color: var(--tertiary-text);
+  background: color-mix(in srgb, var(--blue-50) 20%, transparent);
+  color: var(--blue-50);
   border: none;
   font-size: 0.9375rem;
   display: flex;
@@ -273,7 +287,7 @@ button:active {
 /* Secondary: Add player, Reset score */
 .btn-secondary {
   background: var(--surface-hover);
-  color: var(--text);
+  color: var(--blue-50);
   border: none;
 }
 

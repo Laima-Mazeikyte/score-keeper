@@ -1,6 +1,6 @@
 /**
  * Primitive color palette.
- * Gray = base; secondary = board-inspired (milky white, mustard, burnt orange, sky blue, pastel violet, bright pink, sage).
+ * Gray = base; blue = accent.
  */
 :root {
   /* Gray scale (burgundy-tinted) */
@@ -18,104 +18,25 @@
   --gray-1000: #151012;
 
   /* Blue scale (accent) */
-  --blue-50: #eef1fc;
-  --blue-100: #dce2f5;
-  --blue-200: #b8c2e8;
-  --blue-300: #9dadde;
-  --blue-400: #89a8e8;
-  --blue-500: #7a96e0;
-  --blue-600: #6b82d4;
+  --blue-50: #DAE8F1;
+  --blue-100: #AECDE1;
+  --blue-200: #8BB7D4;
+  --blue-300: #699CBF;
+  --blue-400: #4385B1;
+  --blue-500: #276D9B;
+  --blue-600: #155179;
 
-  /* ─── Secondary colors (board-inspired, same scale logic) ─── */
-
-  /* Cream — milky white / warm off-white */
-  --cream-50: #faf8f5;
-  --cream-100: #f5f0e8;
-  --cream-200: #e8dfd0;
-  --cream-300: #d4c4ad;
-  --cream-400: #b8a07d;
-  --cream-500: #9a8459;
-  --cream-600: #7d6b48;
-  --cream-700: #635539;
-  --cream-800: #4d442e;
-  --cream-900: #3a3324;
-  --cream-950: #262219;
-
-  /* Red — bright pink / fuchsia */
-  --red-50: #fff0f5;
-  --red-100: #ffd9e8;
-  --red-200: #ffb3d1;
-  --red-300: #f58ab8;
-  --red-400: #e85c9a;
-  --red-500: #d94a7f;
-  --red-600: #b83d69;
-  --red-700: #933254;
-  --red-800: #752944;
-  --red-900: #5a2335;
-  --red-950: #3d1824;
-
-  /* Amber — burnt orange */
-  --amber-50: #fdf5ef;
-  --amber-100: #f9e8da;
-  --amber-200: #f0cfb3;
-  --amber-300: #e0a87a;
-  --amber-400: #c87d4a;
-  --amber-500: #a85f36;
-  --amber-600: #8a4e2c;
-  --amber-700: #6e3f24;
-  --amber-800: #57331e;
-  --amber-900: #422819;
-  --amber-950: #2c1b12;
-
-  /* Gold — mustard yellow / ochre */
-  --gold-50: #faf8ef;
-  --gold-100: #f5f0dc;
-  --gold-200: #e8dfb8;
-  --gold-300: #d4c78a;
-  --gold-400: #b8a85c;
-  --gold-500: #9a8a3a;
-  --gold-600: #7d712e;
-  --gold-700: #635a25;
-  --gold-800: #4d471e;
-  --gold-900: #3a3518;
-  --gold-950: #262312;
-
-  /* Sage — muted earthy green */
-  --sage-50: #f2f5ef;
-  --sage-100: #e4ebdc;
-  --sage-200: #c8d4b8;
-  --sage-300: #a3b48a;
-  --sage-400: #7d8f5c;
-  --sage-500: #5f6d42;
-  --sage-600: #4a5535;
-  --sage-700: #3b442a;
-  --sage-800: #2f3622;
-  --sage-900: #23291a;
-  --sage-950: #161c12;
-
-  /* Cyan — sky blue */
-  --cyan-50: #f0f7fc;
-  --cyan-100: #dcecf8;
-  --cyan-200: #b8d9f0;
-  --cyan-300: #8fc2e8;
-  --cyan-400: #5ea6dc;
-  --cyan-500: #3d8bc9;
-  --cyan-600: #3171a6;
-  --cyan-700: #285985;
-  --cyan-800: #22466b;
-  --cyan-900: #1b3552;
-  --cyan-950: #122338;
-
-  /* Violet — pastel violet / lavender */
-  --violet-50: #f8f4fa;
-  --violet-100: #f0e8f5;
-  --violet-200: #e0d0eb;
-  --violet-300: #c8add8;
-  --violet-400: #a87dc2;
-  --violet-500: #8a5aa8;
-  --violet-600: #70498a;
-  --violet-700: #593b6e;
-  --violet-800: #462f58;
-  --violet-900: #352544;
-  --violet-950: #231830;
+  /* Secondary palette */
+  --secondary-1: #699CBF;
+  --secondary-2: #61384A;
+  --secondary-3: #617627;
+  --secondary-4: #F675D2;
+  --secondary-5: #FBA514;
+  --secondary-6: #786CC6;
+  --secondary-7: #A84010;
+  --secondary-8: #5E5203;
+  --secondary-9: #2D6B7C;
+  --secondary-10: #544B8A;
+  --secondary-11: #F05B17;
+  --secondary-12: #AC5293;
 }
