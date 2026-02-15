@@ -326,6 +326,26 @@ function setupScoreEditing() {
   });
 }
 
+function showScoreFeedback(button, text) {
+  const controls = button.closest('.score-controls');
+  if (!controls) return;
+  const span = document.createElement('span');
+  span.className = 'score-feedback';
+  span.textContent = text;
+  var dx = (Math.random() - 0.5) * 28;
+  var dy = -10 - Math.random() * 10;
+  span.style.setProperty('--bump-dx', dx + 'px');
+  span.style.setProperty('--bump-dy', dy + 'px');
+  controls.appendChild(span);
+  const ctrlRect = controls.getBoundingClientRect();
+  const btnRect = button.getBoundingClientRect();
+  span.style.left = (btnRect.left - ctrlRect.left + btnRect.width / 2) + 'px';
+  span.style.top = (btnRect.top - ctrlRect.top - 4) + 'px';
+  span.addEventListener('animationend', function () {
+    span.remove();
+  });
+}
+
 function setupScoreButtons() {
   document.getElementById('players-container').addEventListener('click', function (e) {
     const playerId = e.target.getAttribute('data-player');
@@ -333,9 +353,12 @@ function setupScoreButtons() {
     if (e.target.classList.contains('btn-increment')) {
       setScore(playerId, getScore(playerId) + 1);
       saveScores();
+      showScoreFeedback(e.target, '+1');
     } else if (e.target.classList.contains('btn-decrement')) {
-      setScore(playerId, getScore(playerId) - 1);
+      var current = getScore(playerId);
+      setScore(playerId, current - 1);
       saveScores();
+      if (current > 0) showScoreFeedback(e.target, '−1');
     } else if (e.target.classList.contains('btn-remove')) {
       const card = e.target.closest('.player-card');
       if (card) {
