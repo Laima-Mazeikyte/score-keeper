@@ -100,11 +100,6 @@ function saveScores() {
   }));
 }
 
-function getPlayerName(playerId) {
-  const el = document.getElementById(playerId + '-name');
-  return el ? (el.value || '').trim() : '';
-}
-
 function setPlayerName(playerId, value) {
   const el = document.getElementById(playerId + '-name');
   if (!el) return;
@@ -267,12 +262,6 @@ function setupPlayerNameEditingFor(card) {
   });
 }
 
-function setupPlayerNameEditing() {
-  document.querySelectorAll('.player-card').forEach(function (card) {
-    setupPlayerNameEditingFor(card);
-  });
-}
-
 function setupScoreEditingFor(card) {
   const el = card.querySelector('.score');
   if (!el || el._scoreEditingSetup) return;
@@ -325,12 +314,6 @@ function setupScoreEditingFor(card) {
     document.execCommand('insertText', false, digits);
   });
   el.addEventListener('blur', commitScore);
-}
-
-function setupScoreEditing() {
-  document.querySelectorAll('.player-card').forEach(function (card) {
-    setupScoreEditingFor(card);
-  });
 }
 
 function showScoreFeedback(button, text) {
@@ -457,7 +440,7 @@ function setupStartingScoreEditing() {
 }
 
 /** Game night title: palette used for letter colors (no two adjacent letters same color) */
-var TITLE_COLORS = ['#8BAED4', '#D88904', '#A84010', '#F05B17', '#786CC6', '#877505', '#F675D2'];
+var TITLE_COLORS = ['var(--blue-200)', 'var(--secondary-5)', 'var(--secondary-7)', 'var(--secondary-11)', 'var(--secondary-6)', 'var(--secondary-8)', 'var(--secondary-4)'];
 
 function getTitleLetterSpans() {
   var title = document.querySelector('.page-header h1.title-rainbow');
@@ -606,8 +589,6 @@ function setupCursorShadows() {
 loadScores();
 updateStartingScoreDisplayText();
 setupStartingScoreEditing();
-setupPlayerNameEditing();
-setupScoreEditing();
 setupScoreButtons();
 setupCursorShadows();
 setupTitleColorRotation();

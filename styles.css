@@ -347,27 +347,8 @@ button:active {
   background: var(--primary-bg-hover);
 }
 
-.actions-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: var(--space-3);
-  margin-top: auto;
-  padding-top: var(--space-6);
-}
-
-.actions-center {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
-}
-
-/* Tertiary: Remove, Save, Set default score */
+/* Tertiary: Remove, Set default score */
 .btn-remove,
-.btn-save,
 .btn-tertiary {
   height: 44px;
   background: var(--tertiary);
@@ -380,7 +361,6 @@ button:active {
   flex-shrink: 0;
 }
 
-.btn-save:hover,
 .btn-tertiary:hover {
   background: var(--tertiary-hover);
 }
