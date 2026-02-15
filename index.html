@@ -13,7 +13,9 @@
 <body>
   <div class="content-wrap">
     <header class="page-header">
-      <h1>Game Night</h1>
+      <h1 class="title-rainbow" aria-label="Game night">
+        <span style="color: #8BAED4">G</span><span style="color: #D88904">a</span><span style="color: #A84010">m</span><span style="color: #F05B17">e</span><span> </span><span style="color: #786CC6">N</span><span style="color: #877505">i</span><span style="color: #F675D2">g</span><span style="color: #8BAED4">h</span><span style="color: #D88904">t</span>
+      </h1>
       <div class="header-actions">
         <button type="button" class="btn-tertiary" id="btn-add-player">+ Add player</button>
         <button type="button" class="btn-tertiary" id="btn-reset-score">Reset score</button>
@@ -50,6 +52,18 @@
         </div>
         <button type="button" class="btn-remove" data-player="player-2" aria-label="Remove player">Remove</button>
       </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reset score confirmation modal -->
+  <div id="reset-modal-backdrop" class="modal-backdrop" hidden aria-hidden="true">
+    <div id="reset-modal" class="modal-dialog" role="alertdialog" aria-labelledby="reset-modal-title" aria-describedby="reset-modal-desc">
+      <h2 id="reset-modal-title" class="modal-title">Reset all scores?</h2>
+      <p id="reset-modal-desc" class="modal-desc">Everyone goes back to the starting score. No take-backs!</p>
+      <div class="modal-actions">
+        <button type="button" class="btn-tertiary modal-btn-cancel" id="reset-modal-cancel">Cancel</button>
+        <button type="button" class="btn-tertiary modal-btn-confirm" id="reset-modal-confirm">Reset scores</button>
       </div>
     </div>
   </div>

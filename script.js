@@ -426,6 +426,71 @@ function setupStartingScoreEditing() {
   input.addEventListener('blur', commitScore);
 }
 
+/** Game night title: palette used for letter colors (no two adjacent letters same color) */
+var TITLE_COLORS = ['#8BAED4', '#D88904', '#A84010', '#F05B17', '#786CC6', '#877505', '#F675D2'];
+
+function getTitleLetterSpans() {
+  var title = document.querySelector('.page-header h1.title-rainbow');
+  if (!title) return { spans: [], letterIndexes: [] };
+  var spans = title.querySelectorAll(':scope > span');
+  var letterIndexes = [];
+  var i;
+  for (i = 0; i < spans.length; i++) {
+    if ((spans[i].textContent || '').trim().length === 1) letterIndexes.push(i);
+  }
+  return { spans: spans, letterIndexes: letterIndexes };
+}
+
+function pickDifferentColor(notColors) {
+  var allowed = TITLE_COLORS.filter(function (c) { return notColors.indexOf(c) === -1; });
+  if (allowed.length === 0) return TITLE_COLORS[0];
+  return allowed[Math.floor(Math.random() * allowed.length)];
+}
+
+function randomizeTitleColors() {
+  var state = getTitleLetterSpans();
+  var spans = state.spans;
+  var letterIndexes = state.letterIndexes;
+  if (letterIndexes.length === 0) return;
+  var prevColor = null;
+  var i, idx, neighborColors;
+  for (i = 0; i < letterIndexes.length; i++) {
+    idx = letterIndexes[i];
+    neighborColors = [];
+    if (prevColor !== null) neighborColors.push(prevColor);
+    if (i + 1 < letterIndexes.length) neighborColors.push(spans[letterIndexes[i + 1]].style.color || '');
+    prevColor = pickDifferentColor(neighborColors);
+    spans[idx].style.color = prevColor;
+  }
+}
+
+function changeOneTitleLetterColor() {
+  var state = getTitleLetterSpans();
+  var spans = state.spans;
+  var letterIndexes = state.letterIndexes;
+  if (letterIndexes.length === 0) return;
+  var i = letterIndexes[Math.floor(Math.random() * letterIndexes.length)];
+  var pos = letterIndexes.indexOf(i);
+  var neighborColors = [];
+  if (pos > 0) neighborColors.push(spans[letterIndexes[pos - 1]].style.color || '');
+  if (pos < letterIndexes.length - 1) neighborColors.push(spans[letterIndexes[pos + 1]].style.color || '');
+  var newColor = pickDifferentColor(neighborColors);
+  spans[i].style.color = newColor;
+}
+
+function scheduleNextTitleColorSwitch() {
+  var delay = 800 + Math.random() * 2200;
+  setTimeout(function () {
+    changeOneTitleLetterColor();
+    scheduleNextTitleColorSwitch();
+  }, delay);
+}
+
+function setupTitleColorRotation() {
+  randomizeTitleColors();
+  scheduleNextTitleColorSwitch();
+}
+
 var cursorX = null;
 var cursorY = null;
 var shadowUpdateScheduled = false;
@@ -515,5 +580,51 @@ setupPlayerNameEditing();
 setupScoreEditing();
 setupScoreButtons();
 setupCursorShadows();
+setupTitleColorRotation();
+function openResetModal() {
+  var backdrop = document.getElementById('reset-modal-backdrop');
+  var modal = document.getElementById('reset-modal');
+  var cancelBtn = document.getElementById('reset-modal-cancel');
+  var confirmBtn = document.getElementById('reset-modal-confirm');
+  if (!backdrop || !modal) return;
+
+  backdrop.removeAttribute('hidden');
+  backdrop.setAttribute('aria-hidden', 'false');
+  backdrop.setAttribute('data-open', 'true');
+
+  cancelBtn.focus();
+
+  function closeModal() {
+    backdrop.setAttribute('data-open', 'false');
+    backdrop.setAttribute('hidden', '');
+    backdrop.setAttribute('aria-hidden', 'true');
+    document.removeEventListener('keydown', onKeydown);
+    backdrop.removeEventListener('click', onBackdropClick);
+  }
+
+  function onKeydown(e) {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeModal();
+    }
+  }
+
+  function onBackdropClick(e) {
+    if (e.target === backdrop) closeModal();
+  }
+
+  document.addEventListener('keydown', onKeydown);
+  backdrop.addEventListener('click', onBackdropClick);
+
+  cancelBtn.onclick = function () {
+    closeModal();
+  };
+
+  confirmBtn.onclick = function () {
+    closeModal();
+    resetAllScores();
+  };
+}
+
 document.getElementById('btn-add-player').addEventListener('click', addPlayer);
-document.getElementById('btn-reset-score').addEventListener('click', resetAllScores);
+document.getElementById('btn-reset-score').addEventListener('click', openResetModal);

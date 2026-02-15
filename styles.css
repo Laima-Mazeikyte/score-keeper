@@ -83,6 +83,28 @@ body {
   letter-spacing: 0.02em;
   text-shadow: var(--score-shadow-x, 0) var(--score-shadow-y, 12px) 0 var(--gray-950);
 }
+
+/* Game night title: single shadow layer behind all letters */
+.page-header h1.title-rainbow {
+  position: relative;
+  text-shadow: none;
+}
+.page-header h1.title-rainbow::before {
+  content: "Game night";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  color: transparent;
+  z-index: 0;
+  text-shadow: var(--score-shadow-x, 0) var(--score-shadow-y, 12px) 0 var(--gray-950);
+  pointer-events: none;
+}
+.page-header h1.title-rainbow > span {
+  position: relative;
+  z-index: 1;
+}
 .header-actions {
   display: flex;
   flex-wrap: wrap;
@@ -436,6 +458,83 @@ button:active {
   display: none !important;
 }
 
+/* --- Reset score confirmation modal --- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.modal-backdrop[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-dialog {
+  font-family: "Ranchers", sans-serif;
+  letter-spacing: 0.04em;
+  background: var(--blue-50);
+  border-radius: var(--radius);
+  padding: var(--space-6) var(--space-8);
+  max-width: 380px;
+  width: 100%;
+  transform: scale(0.95);
+  transition: transform 0.2s ease;
+}
+
+.modal-backdrop[data-open="true"] .modal-dialog {
+  transform: scale(1);
+}
+
+.modal-title {
+  margin: 0 0 var(--space-3);
+  font-family: "Ranchers", sans-serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--gray-950);
+  letter-spacing: 0.06em;
+}
+
+.modal-desc {
+  margin: 0 0 var(--space-6);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--gray-700);
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+/* Same style as .btn-tertiary app-wide; only color overrides for light modal background */
+.modal-dialog .btn-tertiary {
+  background: transparent;
+  color: var(--gray-800);
+  border: 1px solid color-mix(in srgb, var(--gray-800) 35%, transparent);
+}
+
+.modal-dialog .btn-tertiary:hover {
+  background: color-mix(in srgb, var(--gray-300) 25%, transparent);
+}
+
+.modal-actions button {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
 @media (max-width: 640px) {
   body {
     padding: var(--space-6) var(--space-4) var(--space-8);
@@ -460,5 +559,9 @@ button:active {
 
   .player-card .btn-remove {
     margin-top: 0;
+  }
+
+  .modal-dialog {
+    padding: var(--space-5) var(--space-6);
   }
 }
