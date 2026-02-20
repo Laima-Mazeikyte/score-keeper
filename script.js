@@ -148,11 +148,21 @@ function getPlayerCount() {
 }
 
 function updateAddPlayerButtonVisibility() {
-  const addPlayerBtn = document.getElementById('btn-add-player');
-  if (!addPlayerBtn) return;
   var atLimit = getPlayerCount() >= MAX_PLAYERS;
-  addPlayerBtn.hidden = atLimit;
-  addPlayerBtn.setAttribute('aria-hidden', atLimit ? 'true' : 'false');
+  const addPlayerBtn = document.getElementById('btn-add-player');
+  if (addPlayerBtn) {
+    addPlayerBtn.hidden = atLimit;
+    addPlayerBtn.setAttribute('aria-hidden', atLimit ? 'true' : 'false');
+  }
+  const addPlayerFooterBtn = document.getElementById('btn-add-player-footer');
+  if (addPlayerFooterBtn) {
+    addPlayerFooterBtn.hidden = atLimit;
+    addPlayerFooterBtn.setAttribute('aria-hidden', atLimit ? 'true' : 'false');
+  }
+  const addPlayerFooter = document.getElementById('add-player-footer');
+  if (addPlayerFooter) {
+    addPlayerFooter.hidden = atLimit;
+  }
 }
 
 function addPlayer() {
@@ -638,4 +648,5 @@ function openResetModal() {
 }
 
 document.getElementById('btn-add-player').addEventListener('click', addPlayer);
+document.getElementById('btn-add-player-footer').addEventListener('click', addPlayer);
 document.getElementById('btn-reset-score').addEventListener('click', openResetModal);
