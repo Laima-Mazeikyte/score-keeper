@@ -65,6 +65,29 @@ body {
   min-height: 0;
 }
 
+/* Subtle footer at bottom of page, left-aligned */
+.page-footer {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-4);
+  font-size: 0.75rem;
+  color: color-mix(in srgb, var(--text) 32%, transparent);
+  text-align: left;
+}
+
+.page-footer a {
+  color: var(--secondary-3);
+  text-decoration: none;
+}
+
+.page-footer a:hover {
+  text-decoration: underline;
+}
+
 /* Page header: title left, Add player right */
 .page-header {
   display: flex;
@@ -499,34 +522,6 @@ button:active {
 
 .btn-add-player-subtle:hover {
   background: color-mix(in srgb, var(--blue-200) 50%, transparent);
-}
-
-/* --- Page footer --- */
-.page-footer {
-  width: 100%;
-  max-width: var(--content-max);
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
-  padding-top: var(--space-8);
-  padding-bottom: var(--space-4);
-  text-align: center;
-}
-
-.footer-text {
-  margin: 0;
-  font-size: 0.8125rem;
-  color: var(--gray-400);
-  letter-spacing: 0.02em;
-}
-
-.footer-text a {
-  color: var(--blue-200);
-  text-decoration: none;
-}
-
-.footer-text a:hover {
-  text-decoration: underline;
 }
 
 /* --- Reset score confirmation modal --- */
