@@ -494,6 +494,7 @@ button:active {
   width: 100%;
   transform: scale(0.95);
   transition: transform 0.2s ease;
+  text-align: left;
 }
 
 .modal-backdrop[data-open="true"] .modal-dialog {
@@ -523,7 +524,7 @@ button:active {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 /* Same style as .btn-tertiary app-wide; only color overrides for light modal background */
@@ -552,9 +553,22 @@ button:active {
   }
 
   .header-actions {
-    width: 100%;
-    flex-wrap: wrap;
+    width: calc(100% + 2 * var(--space-4));
+    min-width: 0;
+    margin-left: calc(-1 * var(--space-4));
+    margin-right: calc(-1 * var(--space-4));
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+    flex-wrap: nowrap;
     flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .header-actions::-webkit-scrollbar {
+    display: none;
   }
 
   .header-actions > * {
@@ -591,7 +605,11 @@ button:active {
     margin-top: 0;
   }
 
+  .modal-backdrop {
+    padding: var(--space-8);
+  }
+
   .modal-dialog {
-    padding: var(--space-5) var(--space-6);
+    padding: var(--space-6) var(--space-8);
   }
 }
