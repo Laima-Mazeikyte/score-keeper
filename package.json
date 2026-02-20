@@ -1,0 +1,7 @@
+{
+  "name": "my-new-app",
+  "private": true,
+  "scripts": {
+    "serve": "npx serve ."
+  }
+}

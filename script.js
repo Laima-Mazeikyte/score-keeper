@@ -5,6 +5,53 @@ function getScore(playerId) {
 
 const STORAGE_KEY = 'scoreKeeper';
 var MAX_PLAYERS = 12;
+
+// Click sound: only plays if sounds/click.mp3, .ogg, or .wav is present (no fallback)
+var clickAudioCtx = null;
+var clickBuffer = null;
+var CLICK_VOLUME = 0.35; // 0–1; lower = quieter
+
+function getClickAudioCtx() {
+  if (!clickAudioCtx) clickAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return clickAudioCtx;
+}
+
+function loadClickSound() {
+  var names = ['click.mp3', 'click.ogg', 'click.wav'];
+  var base = (document.baseURI || window.location.href).replace(/[#?].*$/, '').replace(/\/[^/]*$/, '/');
+  if (base.length && base[base.length - 1] !== '/') base += '/';
+  function tryNext(i) {
+    if (i >= names.length) return;
+    var ctx = getClickAudioCtx();
+    var url = base + 'sounds/' + names[i];
+    fetch(url).then(function (res) {
+      if (!res.ok) throw new Error('Not found');
+      return res.arrayBuffer();
+    }).then(function (ab) {
+      return ctx.decodeAudioData(ab);
+    }).then(function (decoded) {
+      clickBuffer = decoded;
+      if (window.console && console.log) console.log('Click sound loaded: sounds/' + names[i]);
+    }).catch(function () {
+      tryNext(i + 1);
+    });
+  }
+  tryNext(0);
+}
+
+function playClickSound() {
+  if (!clickBuffer) return;
+  try {
+    var ctx = getClickAudioCtx();
+    var masterGain = ctx.createGain();
+    masterGain.gain.value = CLICK_VOLUME;
+    masterGain.connect(ctx.destination);
+    var src = ctx.createBufferSource();
+    src.buffer = clickBuffer;
+    src.connect(masterGain);
+    src.start(0);
+  } catch (err) {}
+}
 var SECONDARY_INDICES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 var DEFAULT_PLAYER_NAMES = ['Sardine Player', 'Eggplant Player', 'Cucumber Player', 'Radish Player', 'Turmeric Player', 'Lilac Player', 'Pumpkin Player', 'Pickle Player', 'Kale Player', 'Grape Player', 'Pepper Player', 'Plum Player'];
 
@@ -351,10 +398,12 @@ function setupScoreButtons() {
     const playerId = e.target.getAttribute('data-player');
     if (!playerId) return;
     if (e.target.classList.contains('btn-increment')) {
+      playClickSound();
       setScore(playerId, getScore(playerId) + 1);
       saveScores();
       showScoreFeedback(e.target, '+1');
     } else if (e.target.classList.contains('btn-decrement')) {
+      playClickSound();
       var current = getScore(playerId);
       setScore(playerId, current - 1);
       saveScores();
@@ -599,6 +648,7 @@ function setupCursorShadows() {
 loadScores();
 updateStartingScoreDisplayText();
 setupStartingScoreEditing();
+loadClickSound();
 setupScoreButtons();
 setupCursorShadows();
 setupTitleColorRotation();
