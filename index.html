@@ -19,6 +19,7 @@
       <div class="header-actions">
         <button type="button" class="btn-tertiary" id="btn-add-player">+ Add player</button>
         <button type="button" class="btn-tertiary" id="btn-reset-score">Reset score</button>
+        <button type="button" class="btn-tertiary" id="btn-fullscreen" aria-label="Full screen">Full screen</button>
         <div class="default-score-slot" id="default-score-slot">
           <div class="starting-score-wrap">
             <div class="starting-score-display btn-tertiary" id="starting-score-display" tabindex="0" role="button" aria-label="Starting score">Starting score: 0</div>
@@ -62,6 +63,9 @@
   <footer class="page-footer" aria-label="Credits">
     Build with Cursor by <a href="https://laima.design/">https://laima.design/</a>
   </footer>
+
+  <!-- Exit full-screen (visible only in fullscreen mode) -->
+  <button type="button" class="btn-exit-fullscreen btn-tertiary" id="btn-exit-fullscreen" aria-label="Exit full screen">Exit full screen</button>
 
   <!-- Reset score confirmation modal -->
   <div id="reset-modal-backdrop" class="modal-backdrop" hidden aria-hidden="true">
