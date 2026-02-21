@@ -359,6 +359,27 @@ button:active {
   animation: score-feedback-fade 0.6s ease-out forwards;
 }
 
+/* Full-screen button: icon only, last in row, pushed to the edge */
+.btn-fullscreen-icon {
+  padding: var(--space-2) var(--space-3);
+  min-width: auto;
+}
+.btn-fullscreen-icon svg {
+  display: block;
+}
+
+.page-header #btn-fullscreen {
+  margin-left: auto;
+}
+
+/* Reset score: fixed bottom-right */
+.btn-reset-score-fixed {
+  position: fixed;
+  bottom: var(--space-4);
+  right: var(--space-4);
+  z-index: 9;
+}
+
 /* Secondary: Add player, Reset score */
 .btn-secondary {
   background: var(--surface-hover);
@@ -681,6 +702,10 @@ body.fullscreen-mode .page-footer {
   display: none;
 }
 
+body.fullscreen-mode .btn-reset-score-fixed {
+  display: none;
+}
+
 body.fullscreen-mode {
   padding: 0;
 }
@@ -786,7 +811,7 @@ body.fullscreen-mode .players-grid .player-card .btn-remove {
   border-radius: clamp(0.5rem, 3cqh, 0.5rem);
 }
 
-/* Exit full-screen button: visible only in fullscreen, fixed top-right */
+/* Exit full-screen button: floating, visible only in fullscreen, top-right; shown on hover */
 .btn-exit-fullscreen {
   display: none;
   position: fixed;
@@ -797,8 +822,15 @@ body.fullscreen-mode .players-grid .player-card .btn-remove {
 
 body.fullscreen-mode .btn-exit-fullscreen {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  opacity: 0;
+  pointer-events: auto;
+  transition: opacity 0.2s ease;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+}
+
+body.fullscreen-mode .btn-exit-fullscreen:hover {
+  opacity: 1;
 }
 
 /* Full-screen not offered on mobile */

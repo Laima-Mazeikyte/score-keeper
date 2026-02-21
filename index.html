@@ -18,14 +18,15 @@
       </h1>
       <div class="header-actions">
         <button type="button" class="btn-tertiary" id="btn-add-player">+ Add player</button>
-        <button type="button" class="btn-tertiary" id="btn-reset-score">Reset score</button>
-        <button type="button" class="btn-tertiary" id="btn-fullscreen" aria-label="Full screen">Full screen</button>
         <div class="default-score-slot" id="default-score-slot">
           <div class="starting-score-wrap">
             <div class="starting-score-display btn-tertiary" id="starting-score-display" tabindex="0" role="button" aria-label="Starting score">Starting score: 0</div>
             <input type="text" class="starting-score-input btn-tertiary" id="starting-score-input" value="0" inputmode="numeric" pattern="[0-9]*" aria-label="Starting score" maxlength="4" hidden>
           </div>
         </div>
+        <button type="button" class="btn-tertiary btn-fullscreen-icon" id="btn-fullscreen" aria-label="Full screen">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        </button>
       </div>
     </header>
     <div class="players-container" id="players-container">
@@ -63,6 +64,9 @@
   <footer class="page-footer" aria-label="Credits">
     Build with Cursor by <a href="https://laima.design/">https://laima.design/</a>
   </footer>
+
+  <!-- Reset score: fixed bottom-right -->
+  <button type="button" class="btn-tertiary btn-reset-score-fixed" id="btn-reset-score" aria-label="Reset score">Reset score</button>
 
   <!-- Exit full-screen (visible only in fullscreen mode) -->
   <button type="button" class="btn-exit-fullscreen btn-tertiary" id="btn-exit-fullscreen" aria-label="Exit full screen">Exit full screen</button>
