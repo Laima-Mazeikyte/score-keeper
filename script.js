@@ -414,6 +414,9 @@ function setupScoreButtons() {
         card.remove();
         saveScores();
         updateAddPlayerButtonVisibility();
+        if (document.body.classList.contains('fullscreen-mode')) {
+          updateFullscreenGridLayout();
+        }
       }
     }
   });
@@ -697,6 +700,65 @@ function openResetModal() {
   };
 }
 
+function exitFullscreenMode() {
+  if (!document.body.classList.contains('fullscreen-mode')) return;
+  var fullscreenBtn = document.getElementById('btn-fullscreen');
+  var grid = document.getElementById('players-grid');
+  document.body.classList.remove('fullscreen-mode');
+  if (grid) {
+    grid.style.removeProperty('--fs-cols');
+    grid.style.removeProperty('--fs-rows');
+  }
+  if (fullscreenBtn) fullscreenBtn.focus();
+}
+
+function updateFullscreenGridLayout() {
+  if (!document.body.classList.contains('fullscreen-mode')) return;
+  var grid = document.getElementById('players-grid');
+  if (!grid) return;
+  var n = grid.querySelectorAll('.player-card').length;
+  if (n <= 0) return;
+  var cols = Math.ceil(Math.sqrt(n));
+  var rows = Math.ceil(n / cols);
+  grid.style.setProperty('--fs-cols', String(cols));
+  grid.style.setProperty('--fs-rows', String(rows));
+}
+
+function enterFullscreenMode() {
+  var exitBtn = document.getElementById('btn-exit-fullscreen');
+  document.body.classList.add('fullscreen-mode');
+  updateFullscreenGridLayout();
+  if (exitBtn) exitBtn.focus();
+}
+
+function setupFullscreenMode() {
+  var fullscreenBtn = document.getElementById('btn-fullscreen');
+  var exitBtn = document.getElementById('btn-exit-fullscreen');
+  var backdrop = document.getElementById('reset-modal-backdrop');
+
+  if (fullscreenBtn) {
+    fullscreenBtn.addEventListener('click', function () {
+      if (document.body.classList.contains('fullscreen-mode')) {
+        exitFullscreenMode();
+      } else {
+        enterFullscreenMode();
+      }
+    });
+  }
+
+  if (exitBtn) {
+    exitBtn.addEventListener('click', exitFullscreenMode);
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape' || !document.body.classList.contains('fullscreen-mode')) return;
+    if (backdrop && backdrop.getAttribute('aria-hidden') === 'false') return;
+    e.preventDefault();
+    exitFullscreenMode();
+  });
+}
+
 document.getElementById('btn-add-player').addEventListener('click', addPlayer);
 document.getElementById('btn-add-player-footer').addEventListener('click', addPlayer);
 document.getElementById('btn-reset-score').addEventListener('click', openResetModal);
+setupFullscreenMode();

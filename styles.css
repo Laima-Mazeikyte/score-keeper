@@ -673,3 +673,137 @@ button:active {
     padding: var(--space-6) var(--space-8);
   }
 }
+
+/* --- Full-screen mode: clean player-only view, all cards fill the screen --- */
+body.fullscreen-mode .page-header,
+body.fullscreen-mode .add-player-footer,
+body.fullscreen-mode .page-footer {
+  display: none;
+}
+
+body.fullscreen-mode {
+  padding: 0;
+}
+
+body.fullscreen-mode .content-wrap {
+  max-width: none;
+  margin: 0;
+  flex: none;
+  min-height: auto;
+}
+
+body.fullscreen-mode .players-container {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: var(--space-4);
+  box-sizing: border-box;
+}
+
+/* Grid fills viewport; --fs-cols and --fs-rows set by JS from player count */
+body.fullscreen-mode .players-grid {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--fs-cols, 2), 1fr);
+  grid-template-rows: repeat(var(--fs-rows, 1), 1fr);
+  gap: var(--space-4);
+  align-content: stretch;
+  justify-content: stretch;
+}
+
+/* Cards fill their grid cell; content centered and scaled proportionally (large, touch-friendly) */
+body.fullscreen-mode .players-grid .player-card {
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+  flex: none;
+  width: 100%;
+  height: 100%;
+  container-type: size;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(1rem, 4.5cqh, 3rem);
+  gap: clamp(0.75rem, 3cqh, 1.5rem);
+}
+
+/* Fullscreen: scale and center card content; larger text and tap targets */
+body.fullscreen-mode .players-grid .player-card .player-name-row {
+  width: 100%;
+  max-width: min(100%, 58cqw);
+  justify-content: center;
+}
+
+body.fullscreen-mode .players-grid .player-card .player-name {
+  font-size: clamp(1rem, 4.2cqh, 2.25rem);
+  height: auto;
+  min-height: clamp(2.75rem, 14cqh, 4.5rem);
+  line-height: 1.2;
+  padding: 0 clamp(0.75rem, 3cqh, 1.25rem);
+  border-radius: clamp(0.5rem, 3cqh, 0.75rem);
+}
+
+body.fullscreen-mode .players-grid .player-card .score-controls {
+  gap: clamp(0.5rem, 2cqh, 1rem);
+  width: 100%;
+  max-width: min(100%, 72cqw);
+  justify-content: center;
+}
+
+/* Score: always fits at least 3 digits; large, readable numbers */
+body.fullscreen-mode .players-grid .player-card .score-controls .score {
+  font-size: clamp(2.25rem, 26cqh, 10rem);
+  min-width: 3ch;
+  text-align: center;
+}
+
+body.fullscreen-mode .players-grid .player-card .score-controls .score-btn {
+  min-width: clamp(2.5rem, 12cqh, 4.5rem);
+  min-height: clamp(2.5rem, 12cqh, 4.5rem);
+  font-size: clamp(1.125rem, 5cqh, 2rem);
+}
+
+body.fullscreen-mode .players-grid .player-card .score-controls .score-feedback {
+  font-size: clamp(1.25rem, 6cqh, 3rem);
+}
+
+body.fullscreen-mode .players-grid .player-card .btn-remove {
+  margin-top: clamp(0.5rem, 1.25cqh, 0.75rem);
+  padding: clamp(0.5rem, 2.5cqh, 0.75rem) clamp(0.75rem, 3.5cqh, 1rem);
+  font-size: clamp(0.875rem, 3.5cqh, 1.25rem);
+  min-height: clamp(2.25rem, 10cqh, 3rem);
+  border-radius: clamp(0.5rem, 3cqh, 0.5rem);
+}
+
+/* Exit full-screen button: visible only in fullscreen, fixed top-right */
+.btn-exit-fullscreen {
+  display: none;
+  position: fixed;
+  top: var(--space-4);
+  right: var(--space-4);
+  z-index: 10;
+}
+
+body.fullscreen-mode .btn-exit-fullscreen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Full-screen not offered on mobile */
+@media (max-width: 767px) {
+  #btn-fullscreen {
+    display: none !important;
+  }
+}
