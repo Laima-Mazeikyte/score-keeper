@@ -66,18 +66,15 @@ body {
   min-height: 0;
 }
 
-/* Subtle footer at bottom of page, left-aligned */
+/* Subtle footer: fixed at bottom-left of viewport, 16px from edges */
 .page-footer {
-  width: 100%;
-  max-width: var(--content-max);
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
-  padding-top: var(--space-8);
-  padding-bottom: var(--space-4);
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
   font-size: 0.75rem;
   color: color-mix(in srgb, var(--text) 32%, transparent);
   text-align: left;
+  z-index: 1;
 }
 
 .page-footer a {
