@@ -178,7 +178,7 @@ body {
   aspect-ratio: auto;
   background: var(--surface);
   border-radius: var(--radius);
-  padding: var(--space-4) var(--space-6);
+  padding: var(--space-4);
   box-shadow: var(--card-shadow-x, 0) var(--card-shadow-y, 18px) 0 0 var(--gray-950);
   display: flex;
   flex-direction: column;
@@ -205,6 +205,8 @@ body {
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  width: 100%;
+  min-width: 0;
 }
 
 .player-name {
@@ -215,10 +217,11 @@ body {
   letter-spacing: 0.08em;
   line-height: 44px;
   color: var(--text);
-  flex: 1;
+  flex: 1 1 0%;
   min-width: 0;
+  width: 100%;
   height: 44px;
-  padding: 0 var(--space-4);
+  padding: 0 var(--space-3);
   border-radius: var(--radius-btn);
   outline: none;
   border: 1px solid transparent;
@@ -230,6 +233,7 @@ body {
   white-space: nowrap;
   -webkit-appearance: none;
   appearance: none;
+  box-sizing: border-box;
 }
 
 .player-name::placeholder {
@@ -759,7 +763,7 @@ body.fullscreen-mode .players-grid .player-card {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: clamp(1rem, 4.5cqh, 3rem);
+  padding: clamp(1rem, 2.5cqh, 1.5rem);
   gap: clamp(0.75rem, 3cqh, 1.5rem);
 }
 
@@ -777,7 +781,7 @@ body.fullscreen-mode .players-grid .player-card .player-name {
   height: auto;
   min-height: clamp(2.75rem, 14cqh, 4.5rem);
   line-height: 1.2;
-  padding: 0 clamp(0.75rem, 3cqh, 1.25rem);
+  padding: 0 clamp(0.5rem, 2cqh, 0.75rem);
   border-radius: clamp(0.5rem, 3cqh, 0.75rem);
 }
 
@@ -857,9 +861,9 @@ body.fullscreen-mode .fs-bottom-bar {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  padding: 0 var(--space-4);
+  justify-content: space-between;
+  gap: 0;
+  padding: 0 var(--space-1);
   transition: transform 0.25s ease-out, opacity 0.2s ease;
 }
 
@@ -888,24 +892,20 @@ body.fullscreen-mode .fs-bottom-bar {
 
 .fs-bottom-bar__btn {
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  display: flex;
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--gray-800);
   background: transparent;
   border: none;
-  border-radius: var(--radius-btn);
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
 .fs-bottom-bar__btn:hover {
   background: color-mix(in srgb, var(--gray-300) 30%, transparent);
-}
-
-.fs-bottom-bar__btn svg {
-  display: block;
 }
 
 /* Full-screen not offered on mobile */
