@@ -411,9 +411,17 @@ button:focus-visible,
 }
 
 /* Tertiary: Remove, Set default score */
-.btn-remove,
 .btn-tertiary {
   height: 44px;
+  background: var(--tertiary);
+  color: var(--tertiary-text);
+}
+
+.btn-remove {
+  padding-top: 0;
+  padding-bottom: 0;
+  width: fit-content;
+  height: fit-content;
   background: var(--tertiary);
   color: var(--tertiary-text);
 }
@@ -792,6 +800,18 @@ body.fullscreen-mode .players-grid .player-card {
   gap: clamp(0.75rem, 3cqh, 1.5rem);
 }
 
+/* Tall cards: content fits inside with equal spacing, no overflow; min 16px between elements */
+body.fullscreen-mode .players-grid .player-card.fs-card-tall {
+  overflow: hidden;
+  justify-content: space-evenly;
+  gap: max(var(--space-4), clamp(0.5rem, 2cqh, 1.5rem));
+}
+body.fullscreen-mode .players-grid .player-card.fs-card-tall .player-name-row,
+body.fullscreen-mode .players-grid .player-card.fs-card-tall .btn-remove {
+  flex-shrink: 0;
+  min-height: 0;
+}
+
 /* Fullscreen: name row and input fill available width in the card */
 body.fullscreen-mode .players-grid .player-card .player-name-row {
   width: 100%;
@@ -810,11 +830,54 @@ body.fullscreen-mode .players-grid .player-card .player-name {
   border-radius: clamp(0.5rem, 3cqh, 0.75rem);
 }
 
+body.fullscreen-mode .players-grid .player-card.fs-card-tall .player-name {
+  font-size: clamp(0.875rem, 3.5cqh, 1.5rem);
+  min-height: clamp(2rem, 10cqh, 3rem);
+  max-width: 100%;
+}
+
 body.fullscreen-mode .players-grid .player-card .score-controls {
   gap: clamp(0.5rem, 2cqh, 1rem);
   width: 100%;
   max-width: 100%;
   justify-content: center;
+}
+
+/* Fullscreen tall/square cards: score on top (takes remaining space), −/+ row below; min 16px gap */
+body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+  gap: max(var(--space-4), clamp(0.35rem, 1.5cqh, 0.75rem));
+  max-width: 100%;
+  container-type: size;
+}
+
+/* Score in tall cards: fill available space and scale up as much as possible without overflowing */
+body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls .score {
+  grid-column: 1 / -1;
+  order: -1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.5rem, min(50cqh, 58cqw), 10rem);
+  line-height: 1.1;
+}
+
+/* Tall cards: −/+ buttons shorter and wider (pill-shaped), not circular */
+body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls .score-btn {
+  min-width: clamp(2.75rem, 18cqw, 4.5rem);
+  min-height: clamp(1.75rem, 8cqh, 2.75rem);
+  width: auto;
+  padding: 0 clamp(0.75rem, 4cqw, 1rem);
+  border-radius: 9999px;
+  font-size: clamp(1rem, 4.5cqh, 1.5rem);
 }
 
 /* Score: sized so "999" fits in the space between −/+; uses remaining card width */
@@ -840,6 +903,13 @@ body.fullscreen-mode .players-grid .player-card .btn-remove {
   font-size: clamp(0.875rem, 3.5cqh, 1.25rem);
   min-height: clamp(2.25rem, 10cqh, 3rem);
   border-radius: clamp(0.5rem, 3cqh, 0.5rem);
+}
+
+body.fullscreen-mode .players-grid .player-card.fs-card-tall .btn-remove {
+  margin-top: 0;
+  padding: clamp(0.35rem, 1.5cqh, 0.5rem) clamp(0.5rem, 2.5cqw, 0.75rem);
+  font-size: clamp(0.75rem, 2.8cqh, 1rem);
+  min-height: clamp(1.75rem, 7cqh, 2.5rem);
 }
 
 /* Exit full-screen button: hidden in fullscreen (exit moved to bottom bar) */
