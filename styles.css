@@ -53,6 +53,7 @@ body {
   flex-direction: column;
 }
 
+
 /* Shared width for header + player grid so they align; flex so players area can grow and center */
 .content-wrap {
   width: 100%;
