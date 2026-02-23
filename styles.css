@@ -866,7 +866,7 @@ body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls .sc
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(1.5rem, min(65cqh, 75cqw), 15rem);
+  font-size: clamp(1.5rem, min(50cqh, 58cqw), 15rem);
   line-height: 1.1;
 }
 
