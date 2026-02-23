@@ -316,25 +316,28 @@ button:focus-visible,
   outline-offset: 2px;
 }
 
-/* Score controls row: minus | score | plus; buttons stretch to fill row height */
+/* Score controls row: minus | score | plus; row fills card width, score takes all space between buttons */
 .score-controls {
   position: relative;
   display: flex;
   flex-wrap: nowrap;
   align-items: stretch;
   gap: var(--space-2);
-}
-
-.score-controls .score {
-  flex: 1;
+  width: 100%;
   min-width: 0;
 }
 
-/* Score +/- buttons: fully rounded circles, no background, bordered, gray symbol */
+.score-controls .score {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+/* Score +/- buttons: fully rounded circles, no grow/shrink so score gets remaining space */
 .score-controls .score-btn {
+  flex: 0 0 auto;
   padding: 0;
   min-width: 2.75rem;
-  min-height: 2.75rem;
+  min-height: 3rem;
   border-radius: 50%;
   background: transparent;
   color: var(--gray-100);
@@ -810,13 +813,13 @@ body.fullscreen-mode .players-grid .player-card .player-name {
 body.fullscreen-mode .players-grid .player-card .score-controls {
   gap: clamp(0.5rem, 2cqh, 1rem);
   width: 100%;
-  max-width: min(100%, 72cqw);
+  max-width: 100%;
   justify-content: center;
 }
 
-/* Score: always fits at least 3 digits; large, readable numbers */
+/* Score: sized so "999" fits in the space between −/+; uses remaining card width */
 body.fullscreen-mode .players-grid .player-card .score-controls .score {
-  font-size: clamp(2.25rem, 26cqh, 10rem);
+  font-size: clamp(1.5rem, min(26cqh, calc((100cqw - 11rem) / 1.8)), 10rem);
   min-width: 3ch;
   text-align: center;
 }
@@ -850,6 +853,120 @@ body.fullscreen-mode .players-grid .player-card .btn-remove {
 
 body.fullscreen-mode .btn-exit-fullscreen {
   display: none;
+}
+
+/* Fullscreen top bar: hover zone 20px from top; expands when visible; dot indicator + Game Night title */
+.fs-top-bar {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  z-index: 10;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: visible;
+}
+
+.fs-top-bar.is-visible {
+  height: calc(8px + 52px + var(--space-2));
+}
+
+body.fullscreen-mode .fs-top-bar {
+  display: flex;
+  pointer-events: auto;
+}
+
+.fs-top-bar__menu {
+  position: absolute;
+  left: var(--space-3);
+  right: var(--space-3);
+  top: 8px;
+  width: auto;
+  height: 52px;
+  background: var(--blue-50);
+  border-radius: 999px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 0 var(--space-4);
+  transition: transform 0.25s ease-out, opacity 0.2s ease;
+}
+
+.fs-top-bar:not(.is-visible) .fs-top-bar__menu {
+  transform: translateY(calc(-100% - 20px));
+  opacity: 0;
+}
+
+.fs-top-bar__indicator {
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--blue-50);
+  border: 1px solid color-mix(in srgb, var(--gray-800) 25%, transparent);
+  transition: opacity 0.2s ease;
+  opacity: 0;
+}
+
+.fs-top-bar__credit {
+  font-size: 0.75rem;
+  color: var(--gray-900);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.fs-top-bar__credit a {
+  color: var(--secondary-3);
+  text-decoration: none;
+}
+
+.fs-top-bar__credit a:hover {
+  text-decoration: underline;
+}
+
+.fs-top-bar:not(.is-visible) .fs-top-bar__indicator {
+  opacity: 1;
+}
+
+/* Game Night title in top bar: same rainbow style, smaller than homepage; left-aligned */
+.fs-top-bar__title {
+  margin: 0;
+  margin-right: auto;
+  flex-shrink: 0;
+  font-family: "Ranchers", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--text);
+  letter-spacing: 0.02em;
+  text-shadow: none;
+}
+
+.fs-top-bar__title.title-rainbow-small {
+  position: relative;
+}
+
+.fs-top-bar__title.title-rainbow-small::before {
+  content: "Game night";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  color: transparent;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.fs-top-bar__title.title-rainbow-small > span {
+  position: relative;
+  z-index: 1;
 }
 
 /* Fullscreen bottom bar: hover zone 20px from bottom; expands when visible so menu is reachable */
