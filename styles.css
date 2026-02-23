@@ -843,26 +843,26 @@ body.fullscreen-mode .players-grid .player-card .score-controls {
   justify-content: center;
 }
 
-/* Fullscreen tall/square cards: score on top (takes remaining space), −/+ row below; min 16px gap */
+/* Fullscreen tall/square cards: score on top, −/+ row below grouped in center (not stretched) */
 body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls {
   flex: 1 1 0;
   min-height: 0;
   overflow: hidden;
   display: grid;
   grid-template-rows: 1fr auto;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr auto auto 1fr;
   justify-items: center;
   align-items: center;
-  gap: max(var(--space-4), clamp(0.35rem, 1.5cqh, 0.75rem));
+  row-gap: clamp(0.2rem, 0.75cqh, 0.5rem);
+  column-gap: clamp(0.35rem, 1.5cqw, 0.75rem);
   max-width: 100%;
   container-type: size;
 }
 
-/* Score in tall cards: fill available space and scale up as much as possible without overflowing */
+/* Score in tall cards: full-width row above buttons, compact block stays centered */
 body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls .score {
   grid-column: 1 / -1;
   order: -1;
-  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -878,6 +878,14 @@ body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls .sc
   padding: 0 clamp(0.75rem, 4cqw, 1rem);
   border-radius: 50%;
   font-size: clamp(1rem, 4.5cqh, 1.5rem);
+}
+
+/* Tall cards: place − and + in center columns so they sit next to each other */
+body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls .btn-decrement {
+  grid-column: 2;
+}
+body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls .btn-increment {
+  grid-column: 3;
 }
 
 /* Score: sized so "999" fits in the space between −/+; uses remaining card width */
