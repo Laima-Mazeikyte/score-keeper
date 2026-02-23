@@ -248,7 +248,7 @@ function addPlayer() {
 function loadScores() {
   const data = getSavedState();
   const playersGrid = document.getElementById('players-grid');
-  var order = ['player-1', 'player-2'];
+  var order = window.innerWidth >= 768 ? ['player-1', 'player-2', 'player-3', 'player-4'] : ['player-1', 'player-2'];
   var scores = {};
   var names = {};
 
@@ -669,7 +669,9 @@ function setupCursorShadows() {
   updateCursorShadows(w / 2, h / 2);
 }
 
+var hadSavedState = getSavedState() !== null;
 loadScores();
+if (!hadSavedState && window.innerWidth >= 768) enterFullscreenMode();
 updateStartingScoreDisplayText();
 setupStartingScoreEditing();
 loadClickSound();
