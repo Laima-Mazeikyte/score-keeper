@@ -251,7 +251,7 @@ body {
 
 .player-name:focus,
 .player-name-row.editing .player-name {
-  border-color: var(--input-border);
+  border-color: var(--focus-ring);
   background: var(--input-hover-bg);
 }
 
@@ -284,7 +284,7 @@ body {
 }
 
 .score:focus {
-  border-color: var(--input-border);
+  border-color: var(--focus-ring);
   background: var(--input-hover-bg);
 }
 
@@ -302,6 +302,18 @@ button {
 
 button:active {
   transform: scale(0.98);
+}
+
+button:focus-visible,
+.player-name:focus-visible,
+.score:focus-visible,
+.starting-score-display:focus-visible,
+.starting-score-input:focus-visible,
+.fs-bottom-bar__btn:focus-visible,
+.fs-starting-score-display:focus-visible,
+.fs-starting-score-input:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 /* Score controls row: minus | score | plus; buttons stretch to fill row height */
@@ -706,6 +718,16 @@ body.fullscreen-mode .page-footer {
   display: none;
 }
 
+/* In fullscreen with 0 players: show the subtle Add player button in the very center */
+body.fullscreen-mode.fullscreen-empty .add-player-footer {
+  display: flex !important;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
 body.fullscreen-mode .btn-reset-score-fixed {
   display: none;
 }
@@ -830,18 +852,22 @@ body.fullscreen-mode .btn-exit-fullscreen {
   display: none;
 }
 
-/* Fullscreen bottom bar: hover zone tall enough to fit bar + margin, bar slides up from bottom */
+/* Fullscreen bottom bar: hover zone 20px from bottom; expands when visible so menu is reachable */
 .fs-bottom-bar {
   display: none;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: calc(52px + var(--space-3));
+  height: 20px;
   z-index: 10;
   align-items: flex-end;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
+}
+
+.fs-bottom-bar.is-visible {
+  height: calc(8px + 52px + var(--space-2));
 }
 
 body.fullscreen-mode .fs-bottom-bar {
@@ -853,7 +879,7 @@ body.fullscreen-mode .fs-bottom-bar {
   position: absolute;
   left: var(--space-3);
   right: var(--space-3);
-  bottom: var(--space-3);
+  bottom: 8px;
   width: auto;
   height: 52px;
   background: var(--blue-50);
@@ -868,14 +894,14 @@ body.fullscreen-mode .fs-bottom-bar {
 }
 
 .fs-bottom-bar:not(.is-visible) .fs-bottom-bar__menu {
-  transform: translateY(calc(100% + 24px));
+  transform: translateY(calc(100% + 20px));
   opacity: 0;
 }
 
 .fs-bottom-bar__indicator {
   position: absolute;
   left: 50%;
-  bottom: var(--space-2);
+  bottom: 4px;
   transform: translateX(-50%);
   width: 10px;
   height: 10px;
@@ -906,6 +932,34 @@ body.fullscreen-mode .fs-bottom-bar {
 
 .fs-bottom-bar__btn:hover {
   background: color-mix(in srgb, var(--gray-300) 30%, transparent);
+}
+
+/* Fullscreen bar: starting score display/input toggle */
+.fs-bottom-bar__starting-score-wrap {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.fs-bottom-bar__starting-score-wrap .fs-starting-score-input[hidden] {
+  display: none !important;
+}
+
+.fs-bottom-bar__starting-score-wrap.editing .fs-starting-score-display {
+  display: none !important;
+}
+
+.fs-bottom-bar__starting-score-wrap.editing .fs-starting-score-input {
+  display: inline-block !important;
+  width: 4ch;
+  min-width: 2ch;
+  text-align: center;
+  border: 1px solid color-mix(in srgb, var(--gray-800) 25%, transparent);
+  border-radius: 999px;
+  padding: 0 var(--space-2);
+  font: inherit;
+  color: var(--gray-800);
 }
 
 /* Full-screen not offered on mobile */
