@@ -870,13 +870,13 @@ body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls .sc
   line-height: 1.1;
 }
 
-/* Tall cards: −/+ buttons shorter and wider (pill-shaped), not circular */
+/* Tall cards: −/+ buttons shorter and wider (horizontal ellipse), not circular */
 body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls .score-btn {
   min-width: clamp(2.75rem, 18cqw, 4.5rem);
   min-height: clamp(1.75rem, 8cqh, 2.75rem);
   width: auto;
   padding: 0 clamp(0.75rem, 4cqw, 1rem);
-  border-radius: 9999px;
+  border-radius: 50%;
   font-size: clamp(1rem, 4.5cqh, 1.5rem);
 }
 
