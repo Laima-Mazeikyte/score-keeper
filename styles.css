@@ -859,14 +859,14 @@ body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls {
   container-type: size;
 }
 
-/* Score in tall cards: full-width row above buttons, compact block stays centered */
+/* Score in tall cards: full-width row above buttons, scale to fill card height/width */
 body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls .score {
   grid-column: 1 / -1;
   order: -1;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(1.5rem, min(50cqh, 58cqw), 10rem);
+  font-size: clamp(1.5rem, min(65cqh, 75cqw), 15rem);
   line-height: 1.1;
 }
 
@@ -888,9 +888,9 @@ body.fullscreen-mode .players-grid .player-card.fs-card-tall .score-controls .bt
   grid-column: 3;
 }
 
-/* Score: sized so "999" fits in the space between −/+; uses remaining card width */
+/* Score: scale to fill card (wide layout); space between −/+ and card width */
 body.fullscreen-mode .players-grid .player-card .score-controls .score {
-  font-size: clamp(4rem, min(32cqh, calc((100cqw - 11rem) / 1.6)), 8rem);
+  font-size: clamp(4rem, min(45cqh, calc((100cqw - 11rem) / 1.4)), 15rem);
   min-width: 3ch;
   text-align: center;
 }
