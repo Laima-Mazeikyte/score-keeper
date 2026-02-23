@@ -730,8 +730,28 @@ function exitFullscreenMode() {
   if (grid) {
     grid.style.removeProperty('--fs-cols');
     grid.style.removeProperty('--fs-rows');
+    grid.querySelectorAll('.player-card').forEach(function (card) {
+      card.classList.remove(FS_CARD_TALL_CLASS);
+    });
   }
   if (fullscreenBtn) fullscreenBtn.focus();
+}
+
+var FS_CARD_TALL_CLASS = 'fs-card-tall';
+
+function updateFullscreenCardProportions() {
+  if (!document.body.classList.contains('fullscreen-mode')) return;
+  var cards = document.querySelectorAll('.players-grid .player-card');
+  var i, card, rect;
+  for (i = 0; i < cards.length; i++) {
+    card = cards[i];
+    rect = card.getBoundingClientRect();
+    if (rect.height >= rect.width) {
+      card.classList.add(FS_CARD_TALL_CLASS);
+    } else {
+      card.classList.remove(FS_CARD_TALL_CLASS);
+    }
+  }
 }
 
 function updateFullscreenGridLayout() {
@@ -744,6 +764,9 @@ function updateFullscreenGridLayout() {
   var rows = Math.ceil(n / cols);
   grid.style.setProperty('--fs-cols', String(cols));
   grid.style.setProperty('--fs-rows', String(rows));
+  requestAnimationFrame(function () {
+    updateFullscreenCardProportions();
+  });
 }
 
 function enterFullscreenMode() {
@@ -890,6 +913,19 @@ function setupFullscreenMode() {
     if (backdrop && backdrop.getAttribute('aria-hidden') === 'false') return;
     e.preventDefault();
     exitFullscreenMode();
+  });
+
+  window.addEventListener('resize', function () {
+    if (document.body.classList.contains('fullscreen-mode')) {
+      requestAnimationFrame(updateFullscreenCardProportions);
+    }
+  });
+  window.addEventListener('orientationchange', function () {
+    if (document.body.classList.contains('fullscreen-mode')) {
+      setTimeout(function () {
+        requestAnimationFrame(updateFullscreenCardProportions);
+      }, 100);
+    }
   });
 }
 
