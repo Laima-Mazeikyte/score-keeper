@@ -75,8 +75,11 @@
   <div class="fs-bottom-bar is-visible" id="fs-bottom-bar" aria-hidden="true">
     <div class="fs-bottom-bar__indicator" aria-hidden="true"></div>
     <div class="fs-bottom-bar__menu">
-      <button type="button" class="fs-bottom-bar__btn btn-tertiary" id="fs-bar-add-player" aria-label="Add player">+ Add player</button>
-      <button type="button" class="fs-bottom-bar__btn btn-tertiary" id="fs-bar-starting-score" aria-label="Starting score">Starting score</button>
+      <button type="button" class="fs-bottom-bar__btn btn-tertiary" id="fs-bar-add-player" aria-label="Add player: 0">Add player: 0</button>
+      <div class="fs-bottom-bar__starting-score-wrap" id="fs-starting-score-wrap">
+        <div class="fs-bottom-bar__btn fs-starting-score-display" id="fs-starting-score-display" tabindex="0" role="button" aria-label="Starting score">Starting score: 0</div>
+        <input type="text" class="fs-bottom-bar__btn fs-starting-score-input" id="fs-starting-score-input" value="0" inputmode="numeric" pattern="[0-9]*" aria-label="Starting score" maxlength="4" hidden>
+      </div>
       <button type="button" class="fs-bottom-bar__btn btn-tertiary" id="fs-bar-reset-score" aria-label="Reset score">Reset score</button>
       <button type="button" class="fs-bottom-bar__btn btn-tertiary" id="fs-bar-exit-fullscreen" aria-label="Exit full screen">Exit full screen</button>
     </div>

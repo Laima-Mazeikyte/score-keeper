@@ -212,8 +212,19 @@ function updateAddPlayerButtonVisibility() {
   }
   const fsBarAddPlayer = document.getElementById('fs-bar-add-player');
   if (fsBarAddPlayer) {
-    fsBarAddPlayer.hidden = atLimit;
-    fsBarAddPlayer.setAttribute('aria-hidden', atLimit ? 'true' : 'false');
+    var count = getPlayerCount();
+    fsBarAddPlayer.textContent = 'Add player: ' + count;
+    fsBarAddPlayer.setAttribute('aria-label', 'Add player: ' + count + (atLimit ? ' (maximum reached)' : ''));
+    fsBarAddPlayer.disabled = atLimit;
+    fsBarAddPlayer.hidden = false;
+    fsBarAddPlayer.setAttribute('aria-hidden', 'false');
+  }
+  var inFullscreen = document.body.classList.contains('fullscreen-mode');
+  var noPlayers = getPlayerCount() === 0;
+  if (inFullscreen && noPlayers) {
+    document.body.classList.add('fullscreen-empty');
+  } else {
+    document.body.classList.remove('fullscreen-empty');
   }
 }
 
@@ -231,6 +242,7 @@ function addPlayer() {
   updateAddPlayerButtonVisibility();
   // Run again after layout so grid has updated (ensures hide at 12 players)
   setTimeout(updateAddPlayerButtonVisibility, 0);
+  if (document.body.classList.contains('fullscreen-mode')) updateFullscreenGridLayout();
 }
 
 function loadScores() {
@@ -441,9 +453,13 @@ function resetAllScores() {
 function updateStartingScoreDisplayText() {
   const display = document.getElementById('starting-score-display');
   const input = document.getElementById('starting-score-input');
+  const fsDisplay = document.getElementById('fs-starting-score-display');
+  const fsInput = document.getElementById('fs-starting-score-input');
   var value = getDefaultScore();
   if (display) display.textContent = 'Starting score: ' + value;
   if (input) input.value = String(value);
+  if (fsDisplay) fsDisplay.textContent = 'Starting score: ' + value;
+  if (fsInput) fsInput.value = String(value);
 }
 
 function setupStartingScoreEditing() {
@@ -710,6 +726,7 @@ function exitFullscreenMode() {
   var fullscreenBtn = document.getElementById('btn-fullscreen');
   var grid = document.getElementById('players-grid');
   document.body.classList.remove('fullscreen-mode');
+  document.body.classList.remove('fullscreen-empty');
   if (grid) {
     grid.style.removeProperty('--fs-cols');
     grid.style.removeProperty('--fs-rows');
@@ -731,6 +748,7 @@ function updateFullscreenGridLayout() {
 
 function enterFullscreenMode() {
   document.body.classList.add('fullscreen-mode');
+  updateAddPlayerButtonVisibility();
   updateFullscreenGridLayout();
   var barExitBtn = document.getElementById('fs-bar-exit-fullscreen');
   if (barExitBtn) barExitBtn.focus();
@@ -763,6 +781,17 @@ function setupFullscreenMode() {
     fsBottomBar.addEventListener('mouseleave', function () {
       fsBottomBar.classList.remove('is-visible');
     });
+    fsBottomBar.addEventListener('focusin', function () {
+      fsBottomBar.classList.add('is-visible');
+    });
+    fsBottomBar.addEventListener('focusout', function () {
+      var bar = fsBottomBar;
+      setTimeout(function () {
+        if (bar && !bar.contains(document.activeElement)) {
+          bar.classList.remove('is-visible');
+        }
+      }, 0);
+    });
   }
 
   var fsBarExitFullscreen = document.getElementById('fs-bar-exit-fullscreen');
@@ -778,17 +807,56 @@ function setupFullscreenMode() {
     });
   }
 
-  var fsBarStartingScore = document.getElementById('fs-bar-starting-score');
-  if (fsBarStartingScore) {
-    fsBarStartingScore.addEventListener('click', function () {
-      var current = getDefaultScore();
-      var raw = window.prompt('Starting score (0–9999)', String(current));
-      if (raw == null) return;
-      var n = Math.max(0, Math.min(9999, parseInt(String(raw).replace(/\D/g, ''), 10) || 0));
+  var fsStartingScoreWrap = document.getElementById('fs-starting-score-wrap');
+  var fsStartingScoreDisplay = document.getElementById('fs-starting-score-display');
+  var fsStartingScoreInput = document.getElementById('fs-starting-score-input');
+  if (fsStartingScoreWrap && fsStartingScoreDisplay && fsStartingScoreInput) {
+    function commitFsStartingScore() {
+      var raw = (fsStartingScoreInput.value || '').replace(/\D/g, '');
+      var n = Math.max(0, Math.min(9999, parseInt(raw, 10) || 0));
       setDefaultScore(n);
+      fsStartingScoreInput.value = String(n);
       updateStartingScoreDisplayText();
+      fsStartingScoreWrap.classList.remove('editing');
+      fsStartingScoreInput.setAttribute('hidden', '');
       saveScores();
+    }
+    function syncFsInputSize() {
+      var len = (fsStartingScoreInput.value || '').replace(/\D/g, '').length || 1;
+      fsStartingScoreInput.size = Math.max(1, Math.min(4, len));
+    }
+    fsStartingScoreDisplay.addEventListener('click', function () {
+      fsStartingScoreWrap.classList.add('editing');
+      fsStartingScoreInput.removeAttribute('hidden');
+      fsStartingScoreInput.value = String(getDefaultScore());
+      syncFsInputSize();
+      setTimeout(function () {
+        fsStartingScoreInput.focus();
+        fsStartingScoreInput.select();
+      }, 0);
     });
+    fsStartingScoreDisplay.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        fsStartingScoreDisplay.click();
+      }
+    });
+    fsStartingScoreInput.addEventListener('input', syncFsInputSize);
+    fsStartingScoreInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        commitFsStartingScore();
+        return;
+      }
+      if (e.key.length === 1 && !/\d/.test(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+      }
+      if (e.key.length === 1 && /\d/.test(e.key)) {
+        var text = (fsStartingScoreInput.value || '').replace(/\D/g, '') + (/\d/.test(e.key) ? e.key : '');
+        if (text.length > 4) e.preventDefault();
+      }
+    });
+    fsStartingScoreInput.addEventListener('blur', commitFsStartingScore);
   }
 
   var fsBarResetScore = document.getElementById('fs-bar-reset-score');
