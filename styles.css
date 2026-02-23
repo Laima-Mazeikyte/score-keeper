@@ -264,7 +264,7 @@ body {
 
 .score {
   font-family: "Ranchers", sans-serif;
-  font-size: 4.5rem;
+  font-size: 8rem;
   font-weight: 700;
   color: var(--blue-50);
   text-align: center;
@@ -819,7 +819,7 @@ body.fullscreen-mode .players-grid .player-card .score-controls {
 
 /* Score: sized so "999" fits in the space between −/+; uses remaining card width */
 body.fullscreen-mode .players-grid .player-card .score-controls .score {
-  font-size: clamp(1.5rem, min(26cqh, calc((100cqw - 11rem) / 1.8)), 10rem);
+  font-size: clamp(4rem, min(32cqh, calc((100cqw - 11rem) / 1.6)), 8rem);
   min-width: 3ch;
   text-align: center;
 }
