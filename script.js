@@ -195,11 +195,14 @@ function getPlayerCount() {
 }
 
 function updateAddPlayerButtonVisibility() {
-  var atLimit = getPlayerCount() >= MAX_PLAYERS;
+  var count = getPlayerCount();
+  var atLimit = count >= MAX_PLAYERS;
   const addPlayerBtn = document.getElementById('btn-add-player');
   if (addPlayerBtn) {
     addPlayerBtn.hidden = atLimit;
     addPlayerBtn.setAttribute('aria-hidden', atLimit ? 'true' : 'false');
+    addPlayerBtn.textContent = '+ Add player: ' + count;
+    addPlayerBtn.setAttribute('aria-label', '+ Add player: ' + count + (atLimit ? ' (maximum reached)' : ''));
   }
   const addPlayerFooterBtn = document.getElementById('btn-add-player-footer');
   if (addPlayerFooterBtn) {
@@ -212,7 +215,6 @@ function updateAddPlayerButtonVisibility() {
   }
   const fsBarAddPlayer = document.getElementById('fs-bar-add-player');
   if (fsBarAddPlayer) {
-    var count = getPlayerCount();
     fsBarAddPlayer.textContent = 'Add player: ' + count;
     fsBarAddPlayer.setAttribute('aria-label', 'Add player: ' + count + (atLimit ? ' (maximum reached)' : ''));
     fsBarAddPlayer.disabled = atLimit;
@@ -935,3 +937,4 @@ document.getElementById('btn-add-player').addEventListener('click', addPlayer);
 document.getElementById('btn-add-player-footer').addEventListener('click', addPlayer);
 document.getElementById('btn-reset-score').addEventListener('click', openResetModal);
 setupFullscreenMode();
+updateAddPlayerButtonVisibility();
