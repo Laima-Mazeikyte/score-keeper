@@ -773,6 +773,27 @@ function setupFullscreenMode() {
     exitBtn.addEventListener('click', exitFullscreenMode);
   }
 
+  var fsTopBar = document.getElementById('fs-top-bar');
+  if (fsTopBar) {
+    fsTopBar.addEventListener('mouseenter', function () {
+      fsTopBar.classList.add('is-visible');
+    });
+    fsTopBar.addEventListener('mouseleave', function () {
+      fsTopBar.classList.remove('is-visible');
+    });
+    fsTopBar.addEventListener('focusin', function () {
+      fsTopBar.classList.add('is-visible');
+    });
+    fsTopBar.addEventListener('focusout', function () {
+      var bar = fsTopBar;
+      setTimeout(function () {
+        if (bar && !bar.contains(document.activeElement)) {
+          bar.classList.remove('is-visible');
+        }
+      }, 0);
+    });
+  }
+
   var fsBottomBar = document.getElementById('fs-bottom-bar');
   if (fsBottomBar) {
     fsBottomBar.addEventListener('mouseenter', function () {

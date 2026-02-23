@@ -71,6 +71,17 @@
   <!-- Exit full-screen (visible only in fullscreen mode) -->
   <button type="button" class="btn-exit-fullscreen btn-tertiary" id="btn-exit-fullscreen" aria-label="Exit full screen">Exit full screen</button>
 
+  <!-- Fullscreen top bar: visible in fullscreen only; hover near top to show -->
+  <div class="fs-top-bar" id="fs-top-bar" aria-hidden="true">
+    <div class="fs-top-bar__indicator" aria-hidden="true"></div>
+    <div class="fs-top-bar__menu">
+      <h2 class="fs-top-bar__title title-rainbow-small" aria-label="Game night">
+        <span style="color: var(--blue-200)">G</span><span style="color: var(--secondary-5)">a</span><span style="color: var(--secondary-7)">m</span><span style="color: var(--secondary-11)">e</span><span> </span><span style="color: var(--secondary-6)">N</span><span style="color: var(--secondary-8)">i</span><span style="color: var(--secondary-4)">g</span><span style="color: var(--blue-200)">h</span><span style="color: var(--secondary-5)">t</span>
+      </h2>
+      <span class="fs-top-bar__credit">Built with Cursor by <a href="https://laima.design/">https://laima.design/</a></span>
+    </div>
+  </div>
+
   <!-- Fullscreen bottom bar: visible in fullscreen only; hover near bottom to show -->
   <div class="fs-bottom-bar is-visible" id="fs-bottom-bar" aria-hidden="true">
     <div class="fs-bottom-bar__indicator" aria-hidden="true"></div>
