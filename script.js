@@ -725,10 +725,10 @@ function updateFullscreenGridLayout() {
 }
 
 function enterFullscreenMode() {
-  var exitBtn = document.getElementById('btn-exit-fullscreen');
   document.body.classList.add('fullscreen-mode');
   updateFullscreenGridLayout();
-  if (exitBtn) exitBtn.focus();
+  var barExitBtn = document.getElementById('fs-bar-exit-fullscreen');
+  if (barExitBtn) barExitBtn.focus();
 }
 
 function setupFullscreenMode() {
@@ -748,6 +748,21 @@ function setupFullscreenMode() {
 
   if (exitBtn) {
     exitBtn.addEventListener('click', exitFullscreenMode);
+  }
+
+  var fsBottomBar = document.getElementById('fs-bottom-bar');
+  if (fsBottomBar) {
+    fsBottomBar.addEventListener('mouseenter', function () {
+      fsBottomBar.classList.add('is-visible');
+    });
+    fsBottomBar.addEventListener('mouseleave', function () {
+      fsBottomBar.classList.remove('is-visible');
+    });
+  }
+
+  var fsBarExitFullscreen = document.getElementById('fs-bar-exit-fullscreen');
+  if (fsBarExitFullscreen) {
+    fsBarExitFullscreen.addEventListener('click', exitFullscreenMode);
   }
 
   document.addEventListener('keydown', function (e) {

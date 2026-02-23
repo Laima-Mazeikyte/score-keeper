@@ -71,6 +71,25 @@
   <!-- Exit full-screen (visible only in fullscreen mode) -->
   <button type="button" class="btn-exit-fullscreen btn-tertiary" id="btn-exit-fullscreen" aria-label="Exit full screen">Exit full screen</button>
 
+  <!-- Fullscreen bottom bar: visible in fullscreen only; hover near bottom to show -->
+  <div class="fs-bottom-bar is-visible" id="fs-bottom-bar" aria-hidden="true">
+    <div class="fs-bottom-bar__indicator" aria-hidden="true"></div>
+    <div class="fs-bottom-bar__menu">
+      <button type="button" class="fs-bottom-bar__btn btn-tertiary" id="fs-bar-add-player" aria-label="Add player">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <button type="button" class="fs-bottom-bar__btn btn-tertiary" id="fs-bar-starting-score" aria-label="Starting score">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h16M4 15h16M10 3L8 21M16 3l-2 18"/></svg>
+      </button>
+      <button type="button" class="fs-bottom-bar__btn btn-tertiary" id="fs-bar-reset-score" aria-label="Reset score">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
+      <button type="button" class="fs-bottom-bar__btn btn-tertiary" id="fs-bar-exit-fullscreen" aria-label="Exit full screen">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 8h3a2 2 0 0 1 2 2v3"/></svg>
+      </button>
+    </div>
+  </div>
+
   <!-- Reset score confirmation modal -->
   <div id="reset-modal-backdrop" class="modal-backdrop" hidden aria-hidden="true">
     <div id="reset-modal" class="modal-dialog" role="alertdialog" aria-labelledby="reset-modal-title" aria-describedby="reset-modal-desc">
