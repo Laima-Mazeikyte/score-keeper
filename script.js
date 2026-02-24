@@ -473,11 +473,15 @@ function setupStartingScoreEditing() {
   function commitScore() {
     var raw = (input.value || '').replace(/\D/g, '');
     var n = Math.max(0, Math.min(9999, parseInt(raw, 10) || 0));
-    setDefaultScore(n);
     input.value = String(n);
-    updateStartingScoreDisplayText();
     wrap.classList.remove('editing');
     input.setAttribute('hidden', '');
+    if (getPlayerCount() > 0) {
+      openStartingScoreModal(n);
+      return;
+    }
+    setDefaultScore(n);
+    updateStartingScoreDisplayText();
     saveScores();
   }
 
@@ -723,6 +727,79 @@ function openResetModal() {
   };
 }
 
+function openStartingScoreModal(newValue) {
+  var backdrop = document.getElementById('starting-score-modal-backdrop');
+  var modal = document.getElementById('starting-score-modal');
+  var titleEl = document.getElementById('starting-score-modal-title');
+  var descEl = document.getElementById('starting-score-modal-desc');
+  var updateBtn = document.getElementById('starting-score-modal-update');
+  var leaveBtn = document.getElementById('starting-score-modal-leave');
+  if (!backdrop || !modal || !descEl) return;
+
+  if (titleEl) titleEl.textContent = 'Update scores?';
+  descEl.textContent = 'Set everyone\'s score to ' + newValue + ', or keep their current scores?';
+
+  var mainDisplay = document.getElementById('starting-score-display');
+  var mainInput = document.getElementById('starting-score-input');
+  var fsDisplay = document.getElementById('fs-starting-score-display');
+  var fsInput = document.getElementById('fs-starting-score-input');
+  if (mainDisplay) mainDisplay.textContent = 'Starting score: ' + newValue;
+  if (mainInput) mainInput.value = String(newValue);
+  if (fsDisplay) fsDisplay.textContent = 'Starting score: ' + newValue;
+  if (fsInput) fsInput.value = String(newValue);
+
+  backdrop.removeAttribute('hidden');
+  backdrop.setAttribute('aria-hidden', 'false');
+  backdrop.setAttribute('data-open', 'true');
+
+  leaveBtn.focus();
+
+  function closeModal() {
+    backdrop.setAttribute('data-open', 'false');
+    backdrop.setAttribute('hidden', '');
+    backdrop.setAttribute('aria-hidden', 'true');
+    document.removeEventListener('keydown', onKeydown);
+    backdrop.removeEventListener('click', onBackdropClick);
+  }
+
+  function onKeydown(e) {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeModal();
+      setDefaultScore(newValue);
+      saveScores();
+      updateStartingScoreDisplayText();
+    }
+  }
+
+  function onBackdropClick(e) {
+    if (e.target === backdrop) {
+      closeModal();
+      setDefaultScore(newValue);
+      saveScores();
+      updateStartingScoreDisplayText();
+    }
+  }
+
+  document.addEventListener('keydown', onKeydown);
+  backdrop.addEventListener('click', onBackdropClick);
+
+  leaveBtn.onclick = function () {
+    closeModal();
+    setDefaultScore(newValue);
+    saveScores();
+    updateStartingScoreDisplayText();
+  };
+
+  updateBtn.onclick = function () {
+    closeModal();
+    setDefaultScore(newValue);
+    resetAllScores();
+    saveScores();
+    updateStartingScoreDisplayText();
+  };
+}
+
 /* Fullscreen API vendor prefixes */
 function getFullscreenElement(doc) {
   return doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement || doc.msFullscreenElement || null;
@@ -888,11 +965,15 @@ function setupFullscreenMode() {
     function commitFsStartingScore() {
       var raw = (fsStartingScoreInput.value || '').replace(/\D/g, '');
       var n = Math.max(0, Math.min(9999, parseInt(raw, 10) || 0));
-      setDefaultScore(n);
       fsStartingScoreInput.value = String(n);
-      updateStartingScoreDisplayText();
       fsStartingScoreWrap.classList.remove('editing');
       fsStartingScoreInput.setAttribute('hidden', '');
+      if (getPlayerCount() > 0) {
+        openStartingScoreModal(n);
+        return;
+      }
+      setDefaultScore(n);
+      updateStartingScoreDisplayText();
       saveScores();
     }
     function syncFsInputSize() {

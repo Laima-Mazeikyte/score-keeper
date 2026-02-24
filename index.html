@@ -108,6 +108,18 @@
     </div>
   </div>
 
+  <!-- Starting score update modal -->
+  <div id="starting-score-modal-backdrop" class="modal-backdrop" hidden aria-hidden="true">
+    <div id="starting-score-modal" class="modal-dialog" role="alertdialog" aria-labelledby="starting-score-modal-title" aria-describedby="starting-score-modal-desc">
+      <h2 id="starting-score-modal-title" class="modal-title">Update scores?</h2>
+      <p id="starting-score-modal-desc" class="modal-desc">Set everyone's score to the new starting score, or keep their current scores?</p>
+      <div class="modal-actions">
+        <button type="button" class="btn-tertiary modal-btn-confirm" id="starting-score-modal-update">Update scores</button>
+        <button type="button" class="btn-tertiary modal-btn-cancel" id="starting-score-modal-leave">Leave as is</button>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
