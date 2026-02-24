@@ -723,7 +723,22 @@ function openResetModal() {
   };
 }
 
-function exitFullscreenMode() {
+/* Fullscreen API vendor prefixes */
+function getFullscreenElement(doc) {
+  return doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement || doc.msFullscreenElement || null;
+}
+function requestFullscreenOn(el) {
+  var fn = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+  return fn ? fn.apply(el) : Promise.reject(new Error('Fullscreen not supported'));
+}
+function exitFullscreenOn(doc) {
+  var fn = doc.exitFullscreen || doc.webkitExitFullscreen || doc.mozCancelFullScreen || doc.msExitFullscreen;
+  if (fn) fn.call(doc);
+}
+
+var FS_CARD_TALL_CLASS = 'fs-card-tall';
+
+function clearFullscreenModeState() {
   if (!document.body.classList.contains('fullscreen-mode')) return;
   var fullscreenBtn = document.getElementById('btn-fullscreen');
   var grid = document.getElementById('players-grid');
@@ -739,7 +754,11 @@ function exitFullscreenMode() {
   if (fullscreenBtn) fullscreenBtn.focus();
 }
 
-var FS_CARD_TALL_CLASS = 'fs-card-tall';
+function exitFullscreenMode() {
+  if (!document.body.classList.contains('fullscreen-mode')) return;
+  if (getFullscreenElement(document)) exitFullscreenOn(document);
+  clearFullscreenModeState();
+}
 
 function updateFullscreenCardProportions() {
   if (!document.body.classList.contains('fullscreen-mode')) return;
@@ -771,12 +790,21 @@ function updateFullscreenGridLayout() {
   });
 }
 
-function enterFullscreenMode() {
+function applyFullscreenLayout() {
   document.body.classList.add('fullscreen-mode');
   updateAddPlayerButtonVisibility();
   updateFullscreenGridLayout();
   var barExitBtn = document.getElementById('fs-bar-exit-fullscreen');
   if (barExitBtn) barExitBtn.focus();
+}
+
+function enterFullscreenMode() {
+  var el = document.documentElement;
+  requestFullscreenOn(el).then(function () {
+    applyFullscreenLayout();
+  }).catch(function () {
+    applyFullscreenLayout();
+  });
 }
 
 function setupFullscreenMode() {
@@ -909,6 +937,16 @@ function setupFullscreenMode() {
   if (fsBarResetScore) {
     fsBarResetScore.addEventListener('click', openResetModal);
   }
+
+  function onFullscreenChange() {
+    if (!getFullscreenElement(document) && document.body.classList.contains('fullscreen-mode')) {
+      clearFullscreenModeState();
+    }
+  }
+  document.addEventListener('fullscreenchange', onFullscreenChange);
+  document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+  document.addEventListener('mozfullscreenchange', onFullscreenChange);
+  document.addEventListener('MSFullscreenChange', onFullscreenChange);
 
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape' || !document.body.classList.contains('fullscreen-mode')) return;
