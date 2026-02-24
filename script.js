@@ -477,7 +477,9 @@ function setupStartingScoreEditing() {
     wrap.classList.remove('editing');
     input.setAttribute('hidden', '');
     if (getPlayerCount() > 0) {
-      openStartingScoreModal(n);
+      if (n !== getDefaultScore()) {
+        openStartingScoreModal(n);
+      }
       return;
     }
     setDefaultScore(n);
@@ -490,16 +492,24 @@ function setupStartingScoreEditing() {
     input.size = Math.max(1, Math.min(4, len));
   }
 
-  display.addEventListener('click', function () {
+  function enterEditing() {
     wrap.classList.add('editing');
     input.removeAttribute('hidden');
     input.value = String(getDefaultScore());
     syncInputSize();
-    setTimeout(function () {
-      input.focus();
-      input.select();
-    }, 0);
+    input.focus();
+    input.select();
+  }
+
+  display.addEventListener('click', function () {
+    enterEditing();
   });
+
+  display.addEventListener('touchstart', function () {
+    if (!wrap.classList.contains('editing')) {
+      enterEditing();
+    }
+  }, { passive: true });
 
   display.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -969,7 +979,9 @@ function setupFullscreenMode() {
       fsStartingScoreWrap.classList.remove('editing');
       fsStartingScoreInput.setAttribute('hidden', '');
       if (getPlayerCount() > 0) {
-        openStartingScoreModal(n);
+        if (n !== getDefaultScore()) {
+          openStartingScoreModal(n);
+        }
         return;
       }
       setDefaultScore(n);
@@ -980,16 +992,24 @@ function setupFullscreenMode() {
       var len = (fsStartingScoreInput.value || '').replace(/\D/g, '').length || 1;
       fsStartingScoreInput.size = Math.max(1, Math.min(4, len));
     }
-    fsStartingScoreDisplay.addEventListener('click', function () {
+    function enterFsEditing() {
       fsStartingScoreWrap.classList.add('editing');
       fsStartingScoreInput.removeAttribute('hidden');
       fsStartingScoreInput.value = String(getDefaultScore());
       syncFsInputSize();
-      setTimeout(function () {
-        fsStartingScoreInput.focus();
-        fsStartingScoreInput.select();
-      }, 0);
+      fsStartingScoreInput.focus();
+      fsStartingScoreInput.select();
+    }
+
+    fsStartingScoreDisplay.addEventListener('click', function () {
+      enterFsEditing();
     });
+
+    fsStartingScoreDisplay.addEventListener('touchstart', function () {
+      if (!fsStartingScoreWrap.classList.contains('editing')) {
+        enterFsEditing();
+      }
+    }, { passive: true });
     fsStartingScoreDisplay.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
